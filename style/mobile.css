@@ -24,6 +24,7 @@
         margin-top: 10px;
     }
     body .progress-bar {
+        margin: 0px 34px;
         bottom: 78px;
     }
 }
