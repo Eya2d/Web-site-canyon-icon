@@ -294,13 +294,15 @@ modal.addEventListener("click", (e) => {
         const buttons = [
   document.getElementById("btn1"),
   document.getElementById("btn2"),
-  document.getElementById("btn3")
+  document.getElementById("btn3"),
+  document.getElementById("btn4")
 ];
 
 const boxes = [
   document.getElementById("box1"),
   document.getElementById("box2"),
-  document.getElementById("box3")
+  document.getElementById("box3"),
+  document.getElementById("box4")
 ];
 
 let index = 0; // يبدأ من 0 لتتناسب مع أول ديف ظاهر
