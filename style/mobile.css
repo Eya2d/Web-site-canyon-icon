@@ -8,7 +8,10 @@
     body button {
         cursor: context-menu;
     }
-    body .mbvideo-d, body .description, body .header-logo {
+    body .mbvideo-d, body .description, body .header-logo, body a {
         cursor: context-menu;
+    }
+    .modal-content .div-video {
+        opacity: 1;
     }
 }
