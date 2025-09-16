@@ -23,4 +23,7 @@
     body .vo {
         margin-top: 10px;
     }
+    body .progress-bar {
+        bottom: 78px;
+    }
 }
