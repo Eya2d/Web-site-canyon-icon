@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canyon icon</title>
+    <link rel="icon" href="image/logo.png">
+
+    <!-- link - css -->
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/icon-style.css">
+    <link rel="stylesheet" href="style/mobile.css">
+</head>
+<body>
+    <div class="body">
+    <!-- Header -->
+    <header>
+        <div class="header-div">
+            <div class="header-logo" onclick="window.location.href='index.html'"><img src="image/logo.png" alt="">Canyon icon</div>
+            <div class="header-link">
+                <a class="Wave-cloud" href="https://www.youtube.com/@Canyonicon">Visit our channel</a>
+                <a class="Wave-cloud none" href="">Contact us</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="xlm" style="padding: 0px 10px;">
+        <section class="baner xlm">
+            <background></background>
+            <div class="baner-div">
+                <div class="box show" id="box1">
+                    <h1>Canyon icon</h1>
+                    <h3>Welcome to our website.<br>How can I help you today? To contact us, log in.</h3>
+                    <button class="box-button Wave-cloud">log in</button>
+                </div>
+                <div class="box" id="box2">
+                    <h1>Video release date</h1>
+                    <h3>Sunday, Tuesday and Thursday at 8 pm Saudi time</h3>
+                    <button class="box-button Wave-cloud">learn more</button>
+                </div>
+                <div class="box" id="box3">
+                    <h1>Don't forget</h1>
+                    <h3>Share the videos with friends and family so everyone <br> can benefit.</h3>
+                    <button class="box-button Wave-cloud">Participate now</button>
+                </div>
+            </div>
+            <!-- buttons -->
+            <div class="baner-bun flex">
+                <button class="Wave-cloud btn coc" id="btn1">1</button>
+                <button class="Wave-cloud btn" id="btn2">2</button>
+                <button class="Wave-cloud btn" id="btn3">3</button>
+            </div>
+        </section>
+    </div>
+    
+
+    <!-- 1 -->
+        <x><a>New Videos</a></x>
+    <div class="mbvideo xlm" id="videosContainer">
+        
+    </div>
+
+    <!-- 2 -->
+        <x><a>Browser add-ons</a></x>
+    
+    <div class="mbvideo xlm">
+        <!-- 1 -->
+        <div class="mbvideo-d" onclick="window.open('https://do1ng.com/products/sign-in-&-sign-up-(1)', '_blank')">
+            <div class="mbvideo-im Wave-cloud"><img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1136%2Fsnap2-(1).png&w=1920&q=75"></div>
+            <div class="description">
+                <div><img src="image/apple-icon-180.webp" alt=""><txt class="video-description">The login interface is smooth and simple with cheerful colors.</txt></div>
+                <a>Code</a>
+            </div>
+        </div>
+        <!-- 2 -->
+        <div class="mbvideo-d" onclick="window.open('https://do1ng.com/products/cloud-core', '_blank')">
+            <div class="mbvideo-im Wave-cloud"><img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1093%2FScreenshot-2025-08-11-092634.png&w=1920&q=75"></div>
+            <div class="description">
+                <div><img src="image/apple-icon-180.webp" alt=""><txt class="video-description">At [Cloud Core], we work to provide innovative technology solutions that help businesses and individuals...</txt></div>
+                <a>Code</a>
+            </div>
+        </div>
+        <!-- 3 -->
+        <div class="mbvideo-d" onclick="window.open('https://do1ng.com/products/canyon-icon-gallery', '_blank')">
+            <div class="mbvideo-im Wave-cloud"><img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1205%2Fimage.webp&w=1920&q=75"></div>
+            <div class="description">
+                <div><img src="image/apple-icon-180.webp" alt=""><txt class="video-description">Gallery of more than 1500 icons</txt></div>
+                <a>Code</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 -->
+        <x style="margin-top: 50px;"><a>Statistics</a></x>
+    <div class="Statistics xlm">
+        <div class="ddf">
+            <h2>Views</h2>
+            <a>12,000,000</a>
+        </div>
+        <div class="ddf">
+            <h2>Videos</h2>
+            <a>245</a>
+        </div>
+        <div class="ddf">
+            <h2>Subscriptions</h2>
+            <a>120,000</a>
+        </div>
+    </div>
+
+    <div class="modified">Last modified <l id="currentYear">0000</l> All rights reserved to Canyon icon</div>
+
+    <div id="videoModal">
+    <div class="modal-content">
+        <div class="div-video">
+            <button class="Wave-cloud open-youtube t1"><icon>open</icon></button>
+            <button class="close Wave-cloud t2"><icon>close</icon></button>
+        </div>
+        <div id="videoContainer"></div>
+        <div id="adModal" class="ad-container">
+            <div class="ad-content">
+                <p>إعلان: منتج رائع!</p>
+                <p>سيتم استئناف الفيديو بعد <span id="countdown">5</span> ثوانٍ</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+    <!-- link - script -->
+    <!-- <svg viewBox="0 0 200 200" width="300" height="300"><defs><path id="circlePath"d="M 100, 100m -75, 0a 75,75 0 1,1 150,0a 75,75 0 1,1 -150,0"/></defs><text font-size="16" font-family="Arial" fill="black"><textPath href="#circlePath" startOffset="0%">CIRCULAR TEXT GENERATED IN FIGMA •</textPath></text></svg> -->
+    <script src="script/Titles.js"></script>
+    <script src="script/script.js"></script>
+    <script src="script/icons-svg.js"></script>
+    <script src="script/Wave-cloud.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+@media screen and (max-width:400px) {
+    .none {
+        display: none;
+    }
+    .mbvideo-d {
+        width: auto;
+    }
+    body button {
+        cursor: context-menu;
+    }
+    body .mbvideo-d, body .description, body .header-logo {
+        cursor: context-menu;
+    }
+}

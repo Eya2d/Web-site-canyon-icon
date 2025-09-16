@@ -1,0 +1,47 @@
+icon {
+    display: flex;
+}
+icon svg {
+    height: 24px;
+    color: #3c4b59;
+    fill: #3c4b59;
+    stroke: #3c4b59;
+}
+button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.mbvideo-d, .description, .header-logo {
+    cursor: pointer;
+}
+
+.Wave-cloud {
+position: relative;
+overflow: hidden;
+}
+img {
+    /* position: relative; */
+    user-select: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+    display: block;
+}
+.ripple {
+    position: absolute; border-radius: 50%;
+    background: rgba(122, 122, 122, 0.116);
+    pointer-events: none;
+    transform: scale(0);
+    opacity: 1;
+    transition: transform 0.4s ease-out;
+}
+.ripple.expand {
+    transform: scale(4);
+}
+.ripple.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
