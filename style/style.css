@@ -435,3 +435,31 @@ iframe {
 l {
     font-weight: 600;
 }
+
+.desgg {
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    top: 0;
+    background-color: white;
+    display: none;
+}
+.xdsee {
+    color: rgb(65, 147, 255);
+    fill: rgb(65, 147, 255);
+    text-align: -webkit-center;
+}
+.xdsee svg {
+    color: rgb(65, 147, 255);
+    width: max-content;
+    height: 44px;
+    margin-bottom: 8px;
+}
+.xdsee div {
+    font-weight: 600;
+    font-size: 15px;
+}
