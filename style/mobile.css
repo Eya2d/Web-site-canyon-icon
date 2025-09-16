@@ -28,3 +28,8 @@
         bottom: 78px;
     }
 }
+@media screen and (max-height:600px) {
+    .desgg {
+        display: flex;
+    }
+}
