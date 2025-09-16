@@ -333,7 +333,7 @@ function startInterval() {
   interval = setInterval(() => {
     let nextIndex = (index + 1) % buttons.length;
     showBox(nextIndex);
-  }, 3000);
+  }, 4000);
 }
 
 // إعادة ضبط المؤقت
