@@ -14,4 +14,13 @@
     .modal-content .div-video {
         opacity: 1;
     }
+    body .baner {
+        height: 247px;
+    }
+    body .box h1 {
+        margin-top: 0;
+    }
+    body .vo {
+        margin-top: 10px;
+    }
 }
