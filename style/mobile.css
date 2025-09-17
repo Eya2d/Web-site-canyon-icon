@@ -62,6 +62,14 @@
     .baner {
         margin-top: 6px;
     }
+    .mbvideo-im:hover img {
+        transition: 0.2s;
+        transform: none;
+    }
+    .mbvideo-im:active img {
+        transition: 0.2s;
+        transform: scale(1.1);
+    }
 }
 @media screen and (max-height:600px) {
     .desgg {
