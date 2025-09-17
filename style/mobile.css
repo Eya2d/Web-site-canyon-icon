@@ -11,9 +11,9 @@
     body .mbvideo-d, body .description, body .header-logo, body a {
         cursor: context-menu;
     }
-    .modal-content .div-video {
+    /* .modal-content .div-video {
         opacity: 1;
-    }
+    } */
     body .baner {
         height: 247px;
     }
@@ -26,6 +26,41 @@
     body .progress-bar {
         margin: 0px 34px;
         bottom: 78px;
+    }
+    .description txt {
+        font-size: 14px;
+        margin-right: 5px;
+    }
+    .baner-div {
+        height: 74%;
+        overflow: hidden;
+    }
+    .div-video button {
+        margin: 0 5px;
+        opacity: .5;
+    }
+    body .div-video {
+        padding: 10px;
+        opacity: 1;
+        top: auto;
+        bottom: 100px;
+        width: 100%;
+        left: 50%;
+        transform: translate(-50%);
+        display: flex;
+        justify-content: center;
+    }
+    .div-video button:hover {
+        opacity: 1;
+    }
+    .header-logo {
+        font-size: 21px;
+    }
+    .header-logo img {
+        height: 31px;
+    }
+    .baner {
+        margin-top: 6px;
     }
 }
 @media screen and (max-height:600px) {
