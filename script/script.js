@@ -436,3 +436,48 @@ const buttons = [
 // الحصول على السنة الحالية تلقائيًا
     const year = new Date().getFullYear();
     document.getElementById("currentYear").textContent = year;
+    
+
+
+
+
+
+
+    const counters = document.querySelectorAll('.counter');
+
+        const options = {
+            root: null,
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    // إزالة الفواصل من القيمة
+                    const target = parseInt(counter.getAttribute('data-target').replace(/,/g, ''));
+                    let count = 0;
+                    const speed = 2000; // المدة الزمنية (مللي ثانية)
+
+                    // تحديث العداد مع إضافة الفواصل للعرض
+                    const updateCounter = () => {
+                        const increment = target / (speed / 16);
+                        count += increment;
+                        if (count < target) {
+                            // تنسيق الرقم مع الفواصل للعرض
+                            counter.textContent = Math.ceil(count).toLocaleString('en-US');
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.textContent = target.toLocaleString('en-US');
+                        }
+                    };
+
+                    updateCounter();
+                    observer.unobserve(counter);
+                }
+            });
+        }, options);
+
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
