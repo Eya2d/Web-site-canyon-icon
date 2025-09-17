@@ -478,3 +478,45 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(counter);
     });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // منع الكليك يمين على الصور الموجودة مسبقًا
+    const images = document.getElementsByTagName('img');
+    for (let img of images) {
+        img.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    }
+
+    // مراقبة الصور التي يتم إضافتها ديناميكيًا
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.tagName === 'IMG') {
+                        node.addEventListener('contextmenu', function(e) {
+                            e.preventDefault();
+                        });
+                    }
+                    // التحقق من الصور داخل العناصر المضافة
+                    if (node.querySelectorAll) {
+                        const newImages = node.querySelectorAll('img');
+                        newImages.forEach(function(img) {
+                            img.addEventListener('contextmenu', function(e) {
+                                e.preventDefault();
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // إعداد المراقب
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
