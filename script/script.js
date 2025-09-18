@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         videoDiv.className = "mbvideo-d";
         videoDiv.id = id;
         videoDiv.innerHTML = `
+                <button class="mbvideo-heart Wave-cloud"><icon>heart</icon></button>
             <div class="mbvideo-im Wave-cloud">
                 <img alt="Video Thumbnail" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg">
             </div>
