@@ -10,7 +10,7 @@ body {
 
 .body {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     overflow-y: auto;
 }
 
@@ -18,7 +18,7 @@ background {
     position: absolute;
     top: 0;
     left: 0;
-    background-image: url();
+    background-image: url(../image/background.webp);
     background-size: cover;
     width: 100%;
     height: 100%;
@@ -187,6 +187,33 @@ header {
     transition: 0.2s;
     transform: scale(1.1);
 }
+.coco {
+    /* outline: solid 2px #0077ff; */
+    outline-offset: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.coco img {
+    filter: brightness(0.5);
+}
+.coco::before {
+    position: absolute;
+    z-index: 5;
+    content: '✔';
+    height: 45px;
+    width: 45px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    border-radius: 50px;
+    outline: solid 2px #0077ff;
+    background: #34384394;
+    text-shadow: 0px 1px 3px #00000038;
+    color: white;
+    font-size: 25px;
+}
 @keyframes appear {
     from {
         opacity: 0;
@@ -220,7 +247,7 @@ header {
     max-height: 66px;
 }
 .description .eerr444 {
-    max-width: 340px;
+    max-width: 385px; /*340px*/
     display: flex;
     align-items: flex-start;
 }
@@ -289,7 +316,8 @@ header {
 }
 .modal-content {
     background: rgb(255 255 255);
-    box-shadow: 0px 11px 22px #00000038;
+    /* box-shadow: 0px 11px 22px #00000038; */
+    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
     padding: 4px;
     border-radius: 0;
     position: relative;
@@ -320,6 +348,14 @@ header {
     /* color: rgb(65, 147, 255); */
     color: rgb(25 125 255);
 }
+.div-video button:active {
+    transform: scale(1.2);
+    background-color: white;
+    opacity: 1;
+}
+.div-video button:active svg {
+    color: rgb(25 125 255);
+}
 .modal-content:hover .div-video {
     opacity: 1;
 }
@@ -332,26 +368,33 @@ iframe {
 }
 
 .ad-container {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      justify-content: center;
-      align-items: center;
-      z-index: 1001;
-    }
-    .ad-content {
-      text-align: center;
-      font-size: 24px;
-      color: #000;
-    }
-    .ad-content span {
-      font-weight: bold;
-      color: #ff0000;
-    }
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    z-index: 1500;
+    backdrop-filter: blur(8px);
+}
+.ad-container background {
+    opacity: .5;
+}
+.ad-content {
+    position: relative;
+    text-shadow: 0px 1px 3px #0000000d;
+    z-index: 50;
+    text-align: center;
+    font-size: 24px;
+}
+.ad-content span {
+    font-weight: bold;
+    color: #3392ff;
+}
 .yellow-dot {
     position: absolute;
     /* bottom: 10px; */
