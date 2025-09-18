@@ -1,6 +1,9 @@
 @media screen and (max-width:400px) {
-    .none {
+    body .none {
         display: none;
+    }
+    body a {
+        cursor: context-menu;
     }
     .mbvideo-d {
         width: auto;
@@ -69,6 +72,10 @@
     .mbvideo-im:active img {
         transition: 0.2s;
         transform: scale(1.1);
+    }
+    body .mbvideo-heart {
+        width: 34px;
+        height: 34px;
     }
 }
 @media screen and (max-height:600px) {
