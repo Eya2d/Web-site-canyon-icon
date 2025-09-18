@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=portrait">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canyon icon</title>
     <link rel="icon" href="image/logo.png">
 
@@ -84,43 +84,9 @@
     </div>
 
     <!-- 2 -->
-        <x><a>Browser add-ons</a></x>
+        <x><a>Our products</a></x>
     
-    <div class="mbvideo xlm">
-        <!-- 1 -->
-        <div class="mbvideo-d" onclick="window.open('https://do1ng.com/products/sign-in-&-sign-up-(1)', '_blank')">
-            <div class="mbvideo-im Wave-cloud"><img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1136%2Fsnap2-(1).png&w=1920&q=75"></div>
-            <div class="description">
-                <div class="eerr444">
-                    <img src="image/apple-icon-180.webp" alt="">
-                    <div class="ffr544"><txt class="video-description">The login interface is smooth and simple with cheerful colors.</txt></div>
-                </div>
-                <a>Code</a>
-            </div>
-        </div>
-        <!-- 2 -->
-        <div class="mbvideo-d" onclick="window.open('https://do1ng.com/products/cloud-core', '_blank')">
-            <div class="mbvideo-im Wave-cloud"><img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1093%2FScreenshot-2025-08-11-092634.png&w=1920&q=75"></div>
-            <div class="description">
-                <div class="eerr444">
-                    <img src="image/apple-icon-180.webp" alt="">
-                    <div class="ffr544"><txt class="video-description">At [Cloud Core], we work to provide innovative technology solutions that help businesses and individuals...</txt></div>
-                </div>
-                <a>Code</a>
-            </div>
-        </div>
-        <!-- 3 -->
-        <div class="mbvideo-d" onclick="window.open('https://do1ng.com/products/canyon-icon-gallery', '_blank')">
-            <div class="mbvideo-im Wave-cloud"><img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1205%2Fimage.webp&w=1920&q=75"></div>
-            <div class="description">
-                <div class="eerr444">
-                    <img src="image/apple-icon-180.webp" alt="">
-                    <div class="ffr544"><txt class="video-description">Gallery of more than 1500 icons</txt></div>
-                </div>
-                <a>Code</a>
-            </div>
-        </div>
-    </div>
+    <div class="mbvideo xlm" id="content-container"></div>
 
     <!-- 3 -->
         <x style="margin-top: 50px;"><a>Statistics</a></x>
@@ -153,6 +119,7 @@
         </div>
         <div id="videoContainer"></div>
         <div id="adModal" class="ad-container">
+            <background></background>
             <div class="ad-content">
                 <p>إعلان: منتج رائع!</p>
                 <p>سيتم استئناف الفيديو بعد <span id="countdown">5</span> ثوانٍ</p>
@@ -176,5 +143,8 @@
     <script src="script/script.js"></script>
     <script src="script/icons-svg.js"></script>
     <script src="script/Wave-cloud.js"></script>
+    <!-- JsData -->
+    <script src="script/videosData.js"></script>
+    <script src="script/Do1ngData.js"></script>
 </body>
 </html>
