@@ -33,7 +33,7 @@ background::before {
     height: 100%;
     backdrop-filter: blur(14px);
 }
-.flex {
+body .flex {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,6 +43,9 @@ background::before {
     width: 985px;
     max-width: -webkit-fill-available;
     margin: auto;
+}
+a {
+    cursor: pointer;
 }
 x {
     position: relative;
@@ -60,6 +63,7 @@ x {
 }
 x a {
     position: relative;
+    cursor: context-menu;
     display: flex;
     justify-content: center;
     width: max-content;
@@ -111,11 +115,51 @@ header {
 }
 
 .header-link a {
-    border-radius: 5px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: anchor-center;
+    border-radius: 25px;
     text-decoration: none;
-    padding: 5px 8px;
+    width: 36px;
+    height: 36px;
+    outline: solid 1px #dde2e7;
+    margin-left: 7px;
     color: rgba(61, 64, 77, 0.849);
 }
+.header-link a:hover {
+    background: rgba(61, 64, 77, 0.048);
+}
+.header-link a svg {
+    height: 18px;
+}
+.he-h {
+    position: relative;
+}
+.he-h zo {
+    position: absolute;
+    user-select: none;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    border-radius: 20px;
+    background: #ce98f0;
+    color: white;
+    margin: -5px;
+    box-shadow: 0px 1px 3px #3a3e5154;
+}
+.he-h a {
+    margin: 0;
+}
+/* .he-y svg {
+    fill: #ff0033;
+}
+.he-c svg  {
+    fill: #0cc143;
+} */
 
 .baner {
     height: 300px;
@@ -170,6 +214,7 @@ header {
     background-color: rgba(81, 87, 94, 0.096);
 }
 .mbvideo-im {
+    position: relative;
     overflow: hidden;
     max-height: 220px;
     border-radius: 20px;
@@ -555,4 +600,23 @@ l {
 .video-nav button:disabled {
     background: #ccc;
     cursor: not-allowed;
+}
+
+body .mbvideo-heart {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    top: 0;
+    margin: 10px;
+    background: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 0px 2px 7px #353a415c;
+}
+.mbvideo-heart svg {
+    height: 22px;
+    top: 1px;
+    position: relative;
 }
