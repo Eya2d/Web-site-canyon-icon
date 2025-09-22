@@ -377,9 +377,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // إنشاء الفيديوهات ديناميكياً
+    // إنشاء الفيديوهات ديناميكياً بشكل تدريجي
     const videosContainer = document.getElementById("videosContainer");
-    Object.keys(videosData).forEach(id => {
+    const videoIds = Object.keys(videosData);
+    let currentIndex = 0;
+
+    function addVideoDiv() {
+        if (currentIndex >= videoIds.length) return; // إذا انتهت الفيديوهات، توقف
+
+        const id = videoIds[currentIndex];
         const videoId = videosData[id].split("/").pop().split("?")[0];
         const videoDiv = document.createElement("div");
         videoDiv.className = "mbvideo-d";
@@ -391,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </button>
             <div class="mbvideo-im Wave-cloud">
-                <img alt="Video Thumbnail" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg">
+                <img alt="Video Thumbnail" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" loading="lazy">
             </div>
             <div class="description">
                 <div class="eerr444">
@@ -405,6 +411,13 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
         videosContainer.appendChild(videoDiv);
+
+        // إضافة مستمع الحدث للنقر على الفيديو
+        videoDiv.addEventListener("click", (e) => {
+            if (!e.target.closest('.mbvideo-heart')) {
+                playVideo(id);
+            }
+        });
 
         const imgElement = videoDiv.querySelector(".mbvideo-im img");
         cropThumbnailImage(imgElement, videoId, videoDiv.querySelector(".mbvideo-im"));
@@ -449,7 +462,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 updateHeartButton(id, isFavorited(id));
             });
-    });
+
+        currentIndex++;
+        // إضافة الفيديو التالي بعد تأخير قصير
+        setTimeout(() => {
+            requestAnimationFrame(addVideoDiv);
+        }, 100); // تأخير 100 مللي ثانية بين كل فيديو
+    }
+
+    // بدء عملية الإضافة التدريجية
+    requestAnimationFrame(addVideoDiv);
 
     // معالجة النقر على زر المفضلة
     document.addEventListener('click', function(e) {
@@ -675,14 +697,6 @@ document.addEventListener("DOMContentLoaded", () => {
         prevVideoBtn.disabled = currentIndex <= 0;
         nextVideoBtn.disabled = currentIndex >= videoIds.length - 1;
     }
-
-    Object.keys(videosData).forEach(id => {
-        document.getElementById(id).addEventListener("click", (e) => {
-            if (!e.target.closest('.mbvideo-heart')) {
-                playVideo(id);
-            }
-        });
-    });
 
     prevVideoBtn.addEventListener("click", () => {
         const videoIds = Object.keys(videosData);
