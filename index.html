@@ -14,13 +14,27 @@
 <body>
     <div class="body">
     <!-- Header -->
+    
+    <div id="ffffd"></div>
+
+    <div class="heart header-link" id="box234" aria-hidden="true">
+        <div class="heart-menu flex">
+            <div>Heart <c id="favoritesCounter">0</c></div>
+            <a class="Wave-cloud ve" id="clearAllBtn"><icon>delete</icon></a>
+        </div>
+        <div class="heart-div" id="favoritesContainer"></div>
+    </div>
+
     <header>
         <div class="header-div">
             <div class="header-logo" onclick="window.location.href='index.html'"><img src="image/logo.png" alt="">Canyon icon</div>
             <div class="header-link">
-                <div class="he-h"><zo class="flex">0</zo><a class="Wave-cloud"><icon>heart</icon></a></div>
-                <a class="Wave-cloud he-y" href="https://www.youtube.com/@Canyonicon"><icon>youtube</icon></a>
-                <a class="Wave-cloud he-c none" href=""><icon>call</icon></a>
+                <div class="he-h">
+                    <zo class="flex" id="newFavoritesBadge"><span id="newFavoritesCount">0</span></zo><label for="box234" class="Wave-cloud ve toggle-btn" id="btn"><icon>heart</icon></label>
+                    <!-- ----- -->
+                </div>
+                <a class="Wave-cloud he-y ve" href="https://www.youtube.com/@Canyonicon"><icon>youtube</icon></a>
+                <a class="Wave-cloud he-c ve none" href=""><icon>call</icon></a>
             </div>
         </div>
     </header>
