@@ -2,15 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // متغير عالمي لتتبع عدد الفيديوهات الجديدة
     let newFavoritesCount = 0;
     
-    // دالة لحساب الفرق بالأيام
-    function getDaysAgo(dateString) {
-        const now = new Date();
+    // دالة لتنسيق التاريخ بالصيغة المطلوبة
+    function formatDate(dateString) {
         const date = new Date(dateString);
-        const diffTime = Math.abs(now - date);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays === 1 ? "منذ يوم" : `منذ ${diffDays} يوم`;
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
     }
-
+    
     // دالة لحفظ المفضلة في localStorage
     function saveFavorites(favorites) {
         localStorage.setItem('videoFavorites', JSON.stringify(favorites));
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         container.innerHTML = favorites.map(fav => `
-            <div class="favorite-item" data-video-id="${fav.id}">
+            <button class="favorite-item" data-video-id="${fav.id}">
                 <xx class="flex"><img class="favorite-thumbnail" src="${fav.thumbnail}" alt="${fav.title}"></xx>
                 <div class="fffrr">
                     <div class="favorite-title">${fav.title}</div>
@@ -293,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </svg>
                     </a>
                 </div>
-            </div>
+            </button>
         `).join('');
     }
 
@@ -498,7 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 const newFavorite = {
                     ...videoData,
-                    date: getDaysAgo(new Date().toISOString())
+                    date: formatDate(new Date()) // استخدام الدالة الجديدة لتنسيق التاريخ
                 };
                 addToFavorites(newFavorite);
                 if (iconContainer) {
@@ -550,6 +550,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // عرض المفضلة عند التحميل
     renderFavorites();
 
+    // باقي الكود يبقى كما هو...
     let adTimes = [];
     let shownAdTimes = [];
     const modal = document.getElementById("videoModal");
@@ -1127,6 +1128,7 @@ let startY = 0;
 let currentY = 0;
 let isSwiping = false;
 const SWIPEABLE_AREA = 50; // منطقة السحب (50 بكسل من الأعلى)
+const SWIPE_THRESHOLD = 20; // النسبة المئوية المطلوبة للإغلاق (50%)
 
 // دالة لتشغيل كشف السحب
 function startSwipeDetection() {
@@ -1228,14 +1230,16 @@ function handleTouchEnd(e) {
   
   const deltaY = currentY - startY;
   const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
-  const halfHeight = boxHeight / 2;
   const originalMargin = box.dataset.originalMargin || '16px';
+  
+  // حساب النسبة المئوية للسحب
+  const swipePercentage = (deltaY / boxHeight) * 100;
   
   // إرجاع الـ transition الأصلي
   box.style.transition = box.dataset.originalTransition || 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out';
   
-  // التحقق من السحب للأسفل بما فيه الكفاية (نصف ارتفاع العنصر)
-  if (deltaY > halfHeight) {
+  // التحقق من السحب بناءً على النسبة المئوية
+  if (swipePercentage > SWIPE_THRESHOLD) {
     // إكمال الحركة للأسفل وإغلاق العنصر
     animateClose();
   } else {
@@ -1324,13 +1328,15 @@ function handleMouseUp(e) {
   
   const deltaY = currentY - startY;
   const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
-  const halfHeight = boxHeight / 2;
   const originalMargin = box.dataset.originalMargin || '16px';
+  
+  // حساب النسبة المئوية للسحب
+  const swipePercentage = (deltaY / boxHeight) * 100;
   
   // إرجاع الـ transition الأصلي
   box.style.transition = box.dataset.originalTransition || 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out';
   
-  if (deltaY > halfHeight) {
+  if (swipePercentage > SWIPE_THRESHOLD) {
     // إكمال الحركة للأسفل وإغلاق العنصر
     animateClose();
   } else {
