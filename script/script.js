@@ -1112,6 +1112,7 @@ function animateClose() {
 let startY = 0;
 let currentY = 0;
 let isSwiping = false;
+const SWIPEABLE_AREA = 50; // منطقة السحب (50 بكسل من الأعلى)
 
 // دالة لتشغيل كشف السحب
 function startSwipeDetection() {
@@ -1139,6 +1140,16 @@ function stopSwipeDetection() {
 // معالجة بداية اللمس
 function handleTouchStart(e) {
   if (window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  // التحقق من أن اللمس في أول 50 بكسل من الأعلى
+  const touchY = e.touches[0].clientY;
+  const boxRect = box.getBoundingClientRect();
+  const boxTop = boxRect.top;
+  
+  // التحقق من أن اللمس في المنطقة القابلة للسحب (أول 50 بكسل من أعلى العنصر)
+  if (touchY > boxTop + SWIPEABLE_AREA) {
+    return; // تجاهل اللمس إذا لم يكن في المنطقة المسموحة
+  }
   
   startY = e.touches[0].clientY;
   isSwiping = true;
@@ -1231,6 +1242,16 @@ function handleTouchEnd(e) {
 // معالجات الماوس (للاختبار)
 function handleMouseDown(e) {
   if (window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  // التحقق من أن النقر في أول 50 بكسل من الأعلى
+  const mouseY = e.clientY;
+  const boxRect = box.getBoundingClientRect();
+  const boxTop = boxRect.top;
+  
+  // التحقق من أن النقر في المنطقة القابلة للسحب (أول 50 بكسل من أعلى العنصر)
+  if (mouseY > boxTop + SWIPEABLE_AREA) {
+    return; // تجاهل النقر إذا لم يكن في المنطقة المسموحة
+  }
   
   startY = e.clientY;
   isSwiping = true;
