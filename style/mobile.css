@@ -1,6 +1,9 @@
 @media screen and (max-width:400px) {
-    body .none, .header-link .none {
+    body .none, .header-link .none{
         display: none;
+    }
+    .body {
+        overflow-y: auto;
     }
     body a, .favorite-item, #ffffd {
         cursor: context-menu;
@@ -11,7 +14,7 @@
     body button {
         cursor: context-menu;
     }
-    body .mbvideo-d, body .description, body .header-logo, body a {
+    body .mbvideo-d, body .description, body .header-logo, body a, .he-h .ve  {
         cursor: context-menu;
     }
     /* .modal-content .div-video {
