@@ -1008,514 +1008,487 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-const btn = document.getElementById('btn');
-const box = document.getElementById('box234');
-const videoModal = document.getElementById('videoModal'); // الديف الموجود بالفعل
-const overlay = document.getElementById('ffffd'); // طبقة الـ overlay
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("btn");
+  const box = document.getElementById("box234");
+  const videoModal = document.getElementById("videoModal");
+  const overlay = document.getElementById("ffffd");
 
-// دالة لإعادة تعيين الـ styles الأساسية للـ box
-function resetBoxStyles() {
-  box.style.transform = '';
-  box.style.opacity = '';
-  box.style.transition = '';
-  box.style.marginLeft = '';
-  box.style.marginRight = '';
-  box.style.display = '';
-  box.removeAttribute('data-box-height');
-  box.removeAttribute('data-original-margin');
-  box.classList.remove('swiping', 'closing');
-}
-
-// دالة لإظهار box234 مع الـ overlay
-function showBox234() {
-  // إعادة تعيين جميع الـ styles أولاً
-  resetBoxStyles();
-  
-  box.classList.add('visible');
-  box.setAttribute('aria-hidden', 'false');
-  btn.classList.add('active');
-  
-  // تحديد موضع البداية بناءً على حجم الشاشة
-  if (window.innerWidth < 400) {
-    // في وضع الهاتف: يبدأ من الأسفل مع margin
-    const boxHeight = box.offsetHeight;
-    const marginValue = '16px';
-    
-    // البداية: خارج الشاشة مع margin صفر
-    box.style.transform = `translateY(${boxHeight}px)`;
-    box.style.opacity = '0';
-    box.style.marginLeft = '0';
-    box.style.marginRight = '0';
-    box.style.transition = 'none'; // إيقاف الانتقال مؤقتاً
-    
-    // تشغيل الرسوم المتحركة بعد frame واحد
-    requestAnimationFrame(() => {
-      box.style.transform = 'translateY(0)';
-      box.style.opacity = '1';
-      box.style.marginLeft = marginValue;
-      box.style.marginRight = marginValue;
-      box.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out';
-    });
-    
-    // حفظ قيمة المargin الأصلية
-    box.dataset.originalMargin = marginValue;
-    
-    // تشغيل نظام السحب في وضع الهاتف
-    startSwipeDetection();
-  } else {
-    // في وضع الكمبيوتر: ظهور عادي بدون حركة
-    box.style.transform = '';
-    box.style.opacity = '1';
-    box.style.transition = 'opacity 0.3s ease-out';
+  // دالة لإعادة تعيين الـ styles الأساسية للـ box
+  function resetBoxStyles() {
+    box.style.transform = "";
+    box.style.opacity = "";
+    box.style.transition = "";
+    box.style.marginLeft = "";
+    box.style.marginRight = "";
+    box.style.display = "";
+    box.removeAttribute("data-box-height");
+    box.removeAttribute("data-original-margin");
+    box.classList.remove("swiping", "closing");
   }
-  
-  // إظهار الـ overlay
-  if (overlay) {
-    overlay.classList.add('active');
-    overlay.style.display = 'block';
-  }
-}
 
-// دالة لإخفاء box234 مع الـ overlay
-function hideBox234() {
-  box.classList.remove('visible');
-  box.setAttribute('aria-hidden', 'true');
-  btn.classList.remove('active');
-  
-  // إخفاء الـ overlay
-  if (overlay) {
-    overlay.classList.remove('active');
-    overlay.style.display = 'none';
-  }
-  
-  // إيقاف نظام السحب
-  stopSwipeDetection();
-  
-  // إعادة تعيين الـ styles
-  resetBoxStyles();
-}
+  // دالة لإظهار box234 مع الـ overlay
+  function showBox234() {
+    resetBoxStyles();
+    box.classList.add("visible");
+    box.setAttribute("aria-hidden", "false");
+    btn.classList.add("active");
 
-// دالة للإغلاق المتحرك (سحب للأسفل واختفاء مع تقليل المargin)
-function animateClose() {
-  if (box.classList.contains('closing')) return; // منع التكرار
-  
-  const boxHeight = box.offsetHeight;
-  box.dataset.boxHeight = boxHeight;
-  const originalMargin = box.dataset.originalMargin || '16px';
-  
-  // إضافة كلاس الإغلاق
-  box.classList.add('closing');
-  
-  // تحريك العنصر للأسفل بمقدار كامل ارتفاعه مع تقليل المargin تدريجياً
-  box.style.transform = `translateY(${boxHeight}px)`;
-  box.style.opacity = '0';
-  box.style.marginLeft = '0';
-  box.style.marginRight = '0';
-  box.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out';
-  
-  // إخفاء العنصر بعد انتهاء الرسوم المتحركة
-  setTimeout(() => {
-    if (box.classList.contains('closing')) {
-      hideBox234();
-      box.classList.remove('closing');
-    }
-  }, 400);
-}
-
-// متغيرات لنظام السحب
-let startY = 0;
-let currentY = 0;
-let isSwiping = false;
-const SWIPEABLE_AREA = 50; // منطقة السحب (50 بكسل من الأعلى)
-const SWIPE_THRESHOLD = 20; // النسبة المئوية المطلوبة للإغلاق (50%)
-
-// دالة لتشغيل كشف السحب
-function startSwipeDetection() {
-  if (window.innerWidth >= 400) return; // فقط في وضع الهاتف
-  
-  // إضافة event listeners للسحب على العنصر نفسه
-  box.addEventListener('touchstart', handleTouchStart, { passive: true });
-  box.addEventListener('touchmove', handleTouchMove, { passive: false });
-  box.addEventListener('touchend', handleTouchEnd, { passive: true });
-  
-  // للماوس أيضاً (للاختبار على الكمبيوتر)
-  box.addEventListener('mousedown', handleMouseDown);
-}
-
-// دالة لإيقاف كشف السحب
-function stopSwipeDetection() {
-  box.removeEventListener('touchstart', handleTouchStart);
-  box.removeEventListener('touchmove', handleTouchMove);
-  box.removeEventListener('touchend', handleTouchEnd);
-  box.removeEventListener('mousedown', handleMouseDown);
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-}
-
-// معالجة بداية اللمس
-function handleTouchStart(e) {
-  if (window.innerWidth >= 400 || box.classList.contains('closing')) return;
-  
-  // التحقق من أن اللمس في أول 50 بكسل من الأعلى
-  const touchY = e.touches[0].clientY;
-  const boxRect = box.getBoundingClientRect();
-  const boxTop = boxRect.top;
-  
-  // التحقق من أن اللمس في المنطقة القابلة للسحب (أول 50 بكسل من أعلى العنصر)
-  if (touchY > boxTop + SWIPEABLE_AREA) {
-    return; // تجاهل اللمس إذا لم يكن في المنطقة المسموحة
-  }
-  
-  startY = e.touches[0].clientY;
-  isSwiping = true;
-  currentY = startY;
-  
-  // حفظ ارتفاع العنصر وقيمة المargin في بداية السحب
-  const boxHeight = box.offsetHeight;
-  const originalMargin = box.dataset.originalMargin || '16px';
-  box.dataset.boxHeight = boxHeight;
-  box.dataset.originalMargin = originalMargin;
-  
-  // حفظ المargin الحالي
-  box.dataset.currentMargin = originalMargin;
-  
-  // إضافة كلاس للدلالة على بداية السحب
-  box.classList.add('swiping');
-  
-  // حفظ الـ transition الأصلي
-  box.dataset.originalTransition = box.style.transition;
-}
-
-// معالجة حركة اللمس
-function handleTouchMove(e) {
-  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
-  
-  // منع التمرير الافتراضي أثناء السحب
-  e.preventDefault();
-  
-  currentY = e.touches[0].clientY;
-  
-  const deltaY = currentY - startY;
-  
-  // تحريك العنصر مع السحب (للأسفل فقط)
-  if (deltaY > 0) {
-    const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
-    const originalMargin = box.dataset.originalMargin || '16px';
-    const translateY = Math.min(deltaY, boxHeight); // الحد الأقصى هو ارتفاع العنصر
-    
-    // حساب المargin التدريجي (يتناقص من 16px إلى 0)
-    const marginPercentage = 1 - (translateY / boxHeight);
-    const currentMargin = Math.max(marginPercentage * 16, 0); // تحويل إلى بكسل
-    
-    box.style.transform = `translateY(${translateY}px)`;
-    box.style.marginLeft = `${currentMargin}px`;
-    box.style.marginRight = `${currentMargin}px`;
-    box.style.transition = 'none';
-    
-    // تحديث الشفافية بناءً على مقدار السحب
-    const opacity = Math.max(1 - (deltaY / boxHeight), 0);
-    box.style.opacity = opacity;
-    
-    // حفظ المargin الحالي للاستخدام لاحقاً
-    box.dataset.currentMargin = `${currentMargin}px`;
-  }
-}
-
-// معالجة انتهاء اللمس
-function handleTouchEnd(e) {
-  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
-  
-  isSwiping = false;
-  
-  const deltaY = currentY - startY;
-  const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
-  const originalMargin = box.dataset.originalMargin || '16px';
-  
-  // حساب النسبة المئوية للسحب
-  const swipePercentage = (deltaY / boxHeight) * 100;
-  
-  // إرجاع الـ transition الأصلي
-  box.style.transition = box.dataset.originalTransition || 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out';
-  
-  // التحقق من السحب بناءً على النسبة المئوية
-  if (swipePercentage > SWIPE_THRESHOLD) {
-    // إكمال الحركة للأسفل وإغلاق العنصر
-    animateClose();
-  } else {
-    // إرجاع العنصر لمكانه الأصلي مع المargin الأصلي
-    box.style.transform = 'translateY(0)';
-    box.style.opacity = '1';
-    box.style.marginLeft = originalMargin;
-    box.style.marginRight = originalMargin;
-    box.classList.remove('swiping');
-  }
-  
-  // إعادة تعيين المتغيرات
-  startY = 0;
-  currentY = 0;
-  delete box.dataset.originalTransition;
-}
-
-// معالجات الماوس (للاختبار)
-function handleMouseDown(e) {
-  if (window.innerWidth >= 400 || box.classList.contains('closing')) return;
-  
-  // التحقق من أن النقر في أول 50 بكسل من الأعلى
-  const mouseY = e.clientY;
-  const boxRect = box.getBoundingClientRect();
-  const boxTop = boxRect.top;
-  
-  // التحقق من أن النقر في المنطقة القابلة للسحب (أول 50 بكسل من أعلى العنصر)
-  if (mouseY > boxTop + SWIPEABLE_AREA) {
-    return; // تجاهل النقر إذا لم يكن في المنطقة المسموحة
-  }
-  
-  startY = e.clientY;
-  isSwiping = true;
-  currentY = startY;
-  
-  // حفظ ارتفاع العنصر وقيمة المargin
-  const boxHeight = box.offsetHeight;
-  const originalMargin = box.dataset.originalMargin || '16px';
-  box.dataset.boxHeight = boxHeight;
-  box.dataset.originalMargin = originalMargin;
-  box.dataset.currentMargin = originalMargin;
-  
-  // حفظ الـ transition الأصلي
-  box.dataset.originalTransition = box.style.transition;
-  
-  box.classList.add('swiping');
-  
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mouseup', handleMouseUp);
-  
-  e.preventDefault();
-}
-
-function handleMouseMove(e) {
-  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
-  
-  currentY = e.clientY;
-  const deltaY = currentY - startY;
-  
-  if (deltaY > 0) {
-    const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
-    const originalMargin = box.dataset.originalMargin || '16px';
-    const translateY = Math.min(deltaY, boxHeight);
-    
-    // حساب المargin التدريجي
-    const marginPercentage = 1 - (translateY / boxHeight);
-    const currentMargin = Math.max(marginPercentage * 16, 0);
-    
-    box.style.transform = `translateY(${translateY}px)`;
-    box.style.marginLeft = `${currentMargin}px`;
-    box.style.marginRight = `${currentMargin}px`;
-    box.style.transition = 'none';
-    
-    // تحديث الشفافية
-    const opacity = Math.max(1 - (deltaY / boxHeight), 0);
-    box.style.opacity = opacity;
-    
-    box.dataset.currentMargin = `${currentMargin}px`;
-  }
-}
-
-function handleMouseUp(e) {
-  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
-  
-  isSwiping = false;
-  
-  const deltaY = currentY - startY;
-  const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
-  const originalMargin = box.dataset.originalMargin || '16px';
-  
-  // حساب النسبة المئوية للسحب
-  const swipePercentage = (deltaY / boxHeight) * 100;
-  
-  // إرجاع الـ transition الأصلي
-  box.style.transition = box.dataset.originalTransition || 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out';
-  
-  if (swipePercentage > SWIPE_THRESHOLD) {
-    // إكمال الحركة للأسفل وإغلاق العنصر
-    animateClose();
-  } else {
-    // إرجاع العنصر لمكانه الأصلي مع المargin الأصلي
-    box.style.transform = 'translateY(0)';
-    box.style.opacity = '1';
-    box.style.marginLeft = originalMargin;
-    box.style.marginRight = originalMargin;
-    box.classList.remove('swiping');
-  }
-  
-  // إزالة event listeners الماوس
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-  
-  startY = 0;
-  currentY = 0;
-  delete box.dataset.originalTransition;
-}
-
-// عند النقر على الزر: أضف أو ازل الكلاسات المناسبة
-btn.addEventListener('click', (e) => {
-  e.preventDefault(); // منع السلوك الافتراضي
-  
-  if (box.classList.contains('visible') || box.classList.contains('closing')) {
-    // إذا كان العنصر مرئياً أو في حالة الإغلاق، أخفِه مباشرة
-    if (box.classList.contains('closing')) {
-      // إيقاف الرسوم المتحركة وإخفاء فوري
-      box.classList.remove('closing');
-      box.style.transition = 'none';
-      hideBox234();
-      // إعادة تعيين الـ transition بعد فترة قصيرة
-      setTimeout(() => {
-        box.style.transition = '';
-      }, 50);
-    } else {
-      hideBox234();
-    }
-  } else {
-    // إذا لم يكن مرئياً، أظهره
-    showBox234();
-  }
-});
-
-// إضافة event listener للـ overlay لإخفاء box234 عند النقر عليه
-if (overlay) {
-  overlay.addEventListener('click', (e) => {
-    // التأكد من أن النقر كان على الـ overlay نفسه وليس على المحتوى الداخلي
-    if (e.target === overlay) {
-      if (box.classList.contains('closing')) {
-        box.classList.remove('closing');
-        box.style.transition = 'none';
-        hideBox234();
-        setTimeout(() => {
-          box.style.transition = '';
-        }, 50);
-      } else {
-        hideBox234();
-      }
-    }
-  });
-  
-  // دعم لللمس والماوس
-  overlay.addEventListener('touchstart', (e) => {
-    if (e.target === overlay) {
-      if (box.classList.contains('closing')) {
-        box.classList.remove('closing');
-        box.style.transition = 'none';
-        hideBox234();
-        setTimeout(() => {
-          box.style.transition = '';
-        }, 50);
-      } else {
-        hideBox234();
-      }
-    }
-  }, { passive: true });
-}
-
-// مراقبة تغيير حجم الشاشة لتفعيل/إلغاء نظام السحب
-window.addEventListener('resize', () => {
-  if (window.innerWidth >= 400 && box.classList.contains('visible')) {
-    // إذا أصبح العرض أكبر من 400، أوقف كشف السحب
-    stopSwipeDetection();
-    
-    // تطبيق تأثير الظهور العادي في الكمبيوتر
-    if (box.classList.contains('visible')) {
-      box.style.transform = '';
-      box.style.opacity = '1';
-      box.style.marginLeft = '';
-      box.style.marginRight = '';
-      box.style.transition = 'opacity 0.3s ease-out';
-      delete box.dataset.originalMargin;
-    }
-  } else if (window.innerWidth < 400 && box.classList.contains('visible')) {
-    // إذا أصبح العرض أصغر من 400 و box234 مرئي، ابدأ كشف السحب
-    startSwipeDetection();
-    
-    // تطبيق تأثير الظهور من الأسفل في الهاتف مع margin
-    if (box.classList.contains('visible')) {
+    if (window.innerWidth < 400) {
       const boxHeight = box.offsetHeight;
-      const marginValue = '16px';
-      box.dataset.originalMargin = marginValue;
-      
+      const marginValue = "16px";
+
       box.style.transform = `translateY(${boxHeight}px)`;
-      box.style.opacity = '0';
-      box.style.marginLeft = '0';
-      box.style.marginRight = '0';
-      box.style.transition = 'none';
-      
+      box.style.opacity = "0";
+      box.style.marginLeft = "0";
+      box.style.marginRight = "0";
+      box.style.transition = "none";
+
       requestAnimationFrame(() => {
-        box.style.transform = 'translateY(0)';
-        box.style.opacity = '1';
+        box.style.transform = "translateY(0)";
+        box.style.opacity = "1";
         box.style.marginLeft = marginValue;
         box.style.marginRight = marginValue;
-        box.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out';
+        box.style.transition =
+          "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out";
       });
+
+      box.dataset.originalMargin = marginValue;
+      box.dataset.initiallyShown = "true";
+      box.dataset.swipeInitialized = "true";
+      startSwipeDetection();
+    } else {
+      box.style.transform = "";
+      box.style.opacity = "1";
+      box.style.transition = "opacity 0.3s ease-out";
+      box.dataset.initiallyShown = "true";
+    }
+
+    if (overlay) {
+      overlay.classList.add("active");
+      overlay.style.display = "block";
     }
   }
-});
 
-// مراقبة ظهور videoModal وإخفاء box234
-const observer = new MutationObserver((mutations) => {
-  mutations.forEach((mutation) => {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-      const isVideoModalVisible = videoModal.classList.contains('show') || 
-                                  videoModal.style.display === 'block' || 
-                                  videoModal.style.visibility === 'visible';
-      
-      if (isVideoModalVisible) {
-        // إخفاء box234 عند ظهور videoModal
-        if (box.classList.contains('closing')) {
-          box.classList.remove('closing');
-          box.style.transition = 'none';
+  // دالة لإخفاء box234 مع الـ overlay
+  function hideBox234() {
+    box.classList.remove("visible");
+    box.setAttribute("aria-hidden", "true");
+    btn.classList.remove("active");
+
+    if (overlay) {
+      overlay.classList.remove("active");
+      overlay.style.display = "none";
+    }
+
+    stopSwipeDetection();
+    resetBoxStyles();
+    delete box.dataset.initiallyShown;
+    delete box.dataset.swipeInitialized;
+  }
+
+  // دالة للإغلاق المتحرك (سحب للأسفل واختفاء مع تقليل المargin)
+  function animateClose() {
+    if (box.classList.contains("closing")) return;
+
+    const boxHeight = box.offsetHeight;
+    box.dataset.boxHeight = boxHeight;
+    const originalMargin = box.dataset.originalMargin || "16px";
+
+    box.classList.add("closing");
+
+    box.style.transform = `translateY(${boxHeight}px)`;
+    box.style.opacity = "0";
+    box.style.marginLeft = "0";
+    box.style.marginRight = "0";
+    box.style.transition =
+      "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out";
+
+    setTimeout(() => {
+      if (box.classList.contains("closing")) {
+        hideBox234();
+        box.classList.remove("closing");
+      }
+    }, 400);
+  }
+
+  // متغيرات لنظام السحب
+  let startY = 0;
+  let currentY = 0;
+  let isSwiping = false;
+  const SWIPEABLE_AREA = 50;
+  const SWIPE_THRESHOLD = 20;
+
+  // دالة لتشغيل كشف السحب
+  function startSwipeDetection() {
+    if (window.innerWidth >= 400) return;
+
+    box.addEventListener("touchstart", handleTouchStart, { passive: true });
+    box.addEventListener("touchmove", handleTouchMove, { passive: false });
+    box.addEventListener("touchend", handleTouchEnd, { passive: true });
+    box.addEventListener("mousedown", handleMouseDown);
+  }
+
+  // دالة لإيقاف كشف السحب
+  function stopSwipeDetection() {
+    box.removeEventListener("touchstart", handleTouchStart);
+    box.removeEventListener("touchmove", handleTouchMove);
+    box.removeEventListener("touchend", handleTouchEnd);
+    box.removeEventListener("mousedown", handleMouseDown);
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+  }
+
+  // معالجة بداية اللمس
+  function handleTouchStart(e) {
+    if (window.innerWidth >= 400 || box.classList.contains("closing")) return;
+
+    const touchY = e.touches[0].clientY;
+    const boxRect = box.getBoundingClientRect();
+    const boxTop = boxRect.top;
+
+    if (touchY > boxTop + SWIPEABLE_AREA) return;
+
+    startY = e.touches[0].clientY;
+    isSwiping = true;
+    currentY = startY;
+
+    const boxHeight = box.offsetHeight;
+    const originalMargin = box.dataset.originalMargin || "16px";
+    box.dataset.boxHeight = boxHeight;
+    box.dataset.originalMargin = originalMargin;
+    box.dataset.currentMargin = originalMargin;
+
+    box.classList.add("swiping");
+    box.dataset.originalTransition = box.style.transition;
+  }
+
+  // معالجة حركة اللمس
+  function handleTouchMove(e) {
+    if (
+      !isSwiping ||
+      window.innerWidth >= 400 ||
+      box.classList.contains("closing")
+    )
+      return;
+
+    e.preventDefault();
+
+    currentY = e.touches[0].clientY;
+    const deltaY = currentY - startY;
+
+    if (deltaY > 0) {
+      const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+      const originalMargin = box.dataset.originalMargin || "16px";
+      const translateY = Math.min(deltaY, boxHeight);
+      const marginPercentage = 1 - translateY / boxHeight;
+      const currentMargin = Math.max(marginPercentage * 16, 0);
+
+      box.style.transform = `translateY(${translateY}px)`;
+      box.style.marginLeft = `${currentMargin}px`;
+      box.style.marginRight = `${currentMargin}px`;
+      box.style.transition = "none";
+      box.style.opacity = Math.max(1 - deltaY / boxHeight, 0);
+      box.dataset.currentMargin = `${currentMargin}px`;
+    }
+  }
+
+  // معالجة انتهاء اللمس
+  function handleTouchEnd(e) {
+    if (
+      !isSwiping ||
+      window.innerWidth >= 400 ||
+      box.classList.contains("closing")
+    )
+      return;
+
+    isSwiping = false;
+    const deltaY = currentY - startY;
+    const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+    const originalMargin = box.dataset.originalMargin || "16px";
+    const swipePercentage = (deltaY / boxHeight) * 100;
+
+    box.style.transition =
+      box.dataset.originalTransition ||
+      "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out";
+
+    if (swipePercentage > SWIPE_THRESHOLD) {
+      animateClose();
+    } else {
+      box.style.transform = "translateY(0)";
+      box.style.opacity = "1";
+      box.style.marginLeft = originalMargin;
+      box.style.marginRight = originalMargin;
+      box.classList.remove("swiping");
+    }
+
+    startY = 0;
+    currentY = 0;
+    delete box.dataset.originalTransition;
+  }
+
+  // معالجات الماوس
+  function handleMouseDown(e) {
+    if (window.innerWidth >= 400 || box.classList.contains("closing")) return;
+
+    const mouseY = e.clientY;
+    const boxRect = box.getBoundingClientRect();
+    const boxTop = boxRect.top;
+
+    if (mouseY > boxTop + SWIPEABLE_AREA) return;
+
+    startY = e.clientY;
+    isSwiping = true;
+    currentY = startY;
+
+    const boxHeight = box.offsetHeight;
+    const originalMargin = box.dataset.originalMargin || "16px";
+    box.dataset.boxHeight = boxHeight;
+    box.dataset.originalMargin = originalMargin;
+    box.dataset.currentMargin = originalMargin;
+
+    box.dataset.originalTransition = box.style.transition;
+    box.classList.add("swiping");
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    e.preventDefault();
+  }
+
+  function handleMouseMove(e) {
+    if (
+      !isSwiping ||
+      window.innerWidth >= 400 ||
+      box.classList.contains("closing")
+    )
+      return;
+
+    currentY = e.clientY;
+    const deltaY = currentY - startY;
+
+    if (deltaY > 0) {
+      const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+      const originalMargin = box.dataset.originalMargin || "16px";
+      const translateY = Math.min(deltaY, boxHeight);
+      const marginPercentage = 1 - translateY / boxHeight;
+      const currentMargin = Math.max(marginPercentage * 16, 0);
+
+      box.style.transform = `translateY(${translateY}px)`;
+      box.style.marginLeft = `${currentMargin}px`;
+      box.style.marginRight = `${currentMargin}px`;
+      box.style.transition = "none";
+      box.style.opacity = Math.max(1 - deltaY / boxHeight, 0);
+      box.dataset.currentMargin = `${currentMargin}px`;
+    }
+  }
+
+  function handleMouseUp(e) {
+    if (
+      !isSwiping ||
+      window.innerWidth >= 400 ||
+      box.classList.contains("closing")
+    )
+      return;
+
+    isSwiping = false;
+    const deltaY = currentY - startY;
+    const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+    const originalMargin = box.dataset.originalMargin || "16px";
+    const swipePercentage = (deltaY / boxHeight) * 100;
+
+    box.style.transition =
+      box.dataset.originalTransition ||
+      "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out";
+
+    if (swipePercentage > SWIPE_THRESHOLD) {
+      animateClose();
+    } else {
+      box.style.transform = "translateY(0)";
+      box.style.opacity = "1";
+      box.style.marginLeft = originalMargin;
+      box.style.marginRight = originalMargin;
+      box.classList.remove("swiping");
+    }
+
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+    startY = 0;
+    currentY = 0;
+    delete box.dataset.originalTransition;
+  }
+
+  // عند النقر على الزر
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (
+      box.classList.contains("visible") ||
+      box.classList.contains("closing")
+    ) {
+      if (box.classList.contains("closing")) {
+        box.classList.remove("closing");
+        box.style.transition = "none";
+        hideBox234();
+        setTimeout(() => {
+          box.style.transition = "";
+        }, 50);
+      } else {
+        hideBox234();
+      }
+    } else {
+      showBox234();
+    }
+  });
+
+  // إضافة event listener للـ overlay
+  if (overlay) {
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) {
+        if (box.classList.contains("closing")) {
+          box.classList.remove("closing");
+          box.style.transition = "none";
           hideBox234();
           setTimeout(() => {
-            box.style.transition = '';
+            box.style.transition = "";
           }, 50);
         } else {
           hideBox234();
         }
       }
-    }
-  });
-});
+    });
 
-// مراقبة التغييرات في classList أو style للـ videoModal
-observer.observe(videoModal, {
-  attributes: true,
-  attributeFilter: ['class', 'style']
-});
+    overlay.addEventListener(
+      "touchstart",
+      (e) => {
+        if (e.target === overlay) {
+          if (box.classList.contains("closing")) {
+            box.classList.remove("closing");
+            box.style.transition = "none";
+            hideBox234();
+            setTimeout(() => {
+              box.style.transition = "";
+            }, 50);
+          } else {
+            hideBox234();
+          }
+        }
+      },
+      { passive: true }
+    );
+  }
 
-// مراقبة display style كبديل إذا لم يكن يعتمد على class
-const styleObserver = new MutationObserver((mutations) => {
-  mutations.forEach((mutation) => {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-      const computedStyle = window.getComputedStyle(videoModal);
-      const isVideoModalVisible = computedStyle.display !== 'none' && 
-                                  computedStyle.visibility !== 'hidden';
-      
-      if (isVideoModalVisible) {
-        // إخفاء box234 عند ظهور videoModal
-        if (box.classList.contains('closing')) {
-          box.classList.remove('closing');
-          box.style.transition = 'none';
-          hideBox234();
-          setTimeout(() => {
-            box.style.transition = '';
-          }, 50);
-        } else {
-          hideBox234();
+  // مراقبة تغيير حجم الشاشة
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (box.classList.contains("closing")) return;
+
+      if (window.innerWidth >= 400) {
+        stopSwipeDetection();
+        if (box.classList.contains("visible")) {
+          resetBoxStyles();
+          box.style.opacity = "1";
+          box.style.transform = "";
+          box.style.marginLeft = "";
+          box.style.marginRight = "";
+          box.style.transition = "opacity 0.3s ease-out";
+          delete box.dataset.originalMargin;
+          delete box.dataset.swipeInitialized;
+        }
+      } else if (window.innerWidth < 400 && box.classList.contains("visible")) {
+        if (!box.dataset.swipeInitialized) {
+          startSwipeDetection();
+          box.dataset.swipeInitialized = "true";
+        }
+
+        if (!box.dataset.initiallyShown) {
+          const boxHeight = box.offsetHeight;
+          const marginValue = "16px";
+          box.dataset.originalMargin = marginValue;
+          box.dataset.initiallyShown = "true";
+
+          box.style.transform = `translateY(${boxHeight}px)`;
+          box.style.opacity = "0";
+          box.style.marginLeft = "0";
+          box.style.marginRight = "0";
+          box.style.transition = "none";
+
+          requestAnimationFrame(() => {
+            box.style.transform = "translateY(0)";
+            box.style.opacity = "1";
+            box.style.marginLeft = marginValue;
+            box.style.marginRight = marginValue;
+            box.style.transition =
+              "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out";
+          });
         }
       }
-    }
+    }, 100);
   });
-});
 
-styleObserver.observe(videoModal, {
-  attributes: true,
-  attributeFilter: ['style']
-});
+  // مراقبة ظهور videoModal
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (
+        mutation.type === "attributes" &&
+        mutation.attributeName === "class"
+      ) {
+        const isVideoModalVisible =
+          videoModal.classList.contains("show") ||
+          videoModal.style.display === "block" ||
+          videoModal.style.visibility === "visible";
+
+        if (isVideoModalVisible) {
+          if (box.classList.contains("closing")) {
+            box.classList.remove("closing");
+            box.style.transition = "none";
+            hideBox234();
+            setTimeout(() => {
+              box.style.transition = "";
+            }, 50);
+          } else {
+            hideBox234();
+          }
+        }
+      }
+    });
+  });
+
+  observer.observe(videoModal, {
+    attributes: true,
+    attributeFilter: ["class", "style"],
+  });
+
+  // مراقبة display style
+  const styleObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (
+        mutation.type === "attributes" &&
+        mutation.attributeName === "style"
+      ) {
+        const computedStyle = window.getComputedStyle(videoModal);
+        const isVideoModalVisible =
+          computedStyle.display !== "none" &&
+          computedStyle.visibility !== "hidden";
+
+        if (isVideoModalVisible) {
+          if (box.classList.contains("closing")) {
+            box.classList.remove("closing");
+            box.style.transition = "none";
+            hideBox234();
+            setTimeout(() => {
+              box.style.transition = "";
+            }, 50);
+          } else {
+            hideBox234();
+          }
+        }
+      }
+    });
+  });
+
+  styleObserver.observe(videoModal, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
 });
