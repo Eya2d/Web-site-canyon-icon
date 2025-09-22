@@ -1,8 +1,8 @@
 @media screen and (max-width:400px) {
-    body .none {
+    body .none, .header-link .none {
         display: none;
     }
-    body a {
+    body a, .favorite-item, #ffffd {
         cursor: context-menu;
     }
     .mbvideo-d {
@@ -76,6 +76,30 @@
     body .mbvideo-heart {
         width: 34px;
         height: 34px;
+    }
+    .heart {
+        position: fixed;
+        scrollbar-width: none;
+        width: -webkit-fill-available;
+        bottom: 0;
+        border-radius: 25px 25px 0px 0px;
+        margin: 0 16px;
+        transform: none;
+        left: auto;
+        box-shadow: 0px -9px 20px #46506924;
+        padding-bottom: 38px;
+    }
+    body #box234 {
+        will-change: transform, opacity;
+        transform: translateZ(0); /* تسريع الأداء */
+    }
+
+    body #box234.swiping {
+        cursor: grabbing !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
     }
 }
 @media screen and (max-height:600px) {
