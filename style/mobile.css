@@ -101,6 +101,17 @@
         -moz-user-select: none !important;
         -ms-user-select: none !important;
     }
+    body .heart-menu::before {
+    position: absolute;
+    content: '';
+    height: 5px;
+    width: 40px;
+    top: 14px;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 10px;
+    background-color: #5a63747d;
+    }
 }
 @media screen and (max-height:600px) {
     .desgg {
