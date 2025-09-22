@@ -1,4 +1,331 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // متغير عالمي لتتبع عدد الفيديوهات الجديدة
+    let newFavoritesCount = 0;
+    
+    // دالة لحساب الفرق بالأيام
+    function getDaysAgo(dateString) {
+        const now = new Date();
+        const date = new Date(dateString);
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays === 1 ? "منذ يوم" : `منذ ${diffDays} يوم`;
+    }
+
+    // دالة لحفظ المفضلة في localStorage
+    function saveFavorites(favorites) {
+        localStorage.setItem('videoFavorites', JSON.stringify(favorites));
+    }
+
+    // دالة لتحميل المفضلة من localStorage
+    function loadFavorites() {
+        const favorites = localStorage.getItem('videoFavorites');
+        return favorites ? JSON.parse(favorites) : [];
+    }
+
+    // دالة لتحميل عداد الفيديوهات الجديدة من localStorage
+    function loadNewFavoritesCount() {
+        const savedCount = localStorage.getItem('newFavoritesCount');
+        return savedCount ? parseInt(savedCount) : 0;
+    }
+
+    // دالة لحفظ عداد الفيديوهات الجديدة في localStorage
+    function saveNewFavoritesCount(count) {
+        localStorage.setItem('newFavoritesCount', count.toString());
+        newFavoritesCount = count;
+    }
+
+    // دالة لتحميل معرفات الفيديوهات الجديدة من localStorage
+    function loadNewFavoritesIds() {
+        const ids = localStorage.getItem('newFavoritesIds');
+        return ids ? JSON.parse(ids) : [];
+    }
+
+    // دالة لإخفاء/إظهار badge المفضلة الجديدة
+    function toggleNewFavoritesBadge(show = false) {
+        const badge = document.getElementById("newFavoritesBadge");
+        const countSpan = document.getElementById("newFavoritesCount");
+        
+        if (!badge || !countSpan) return;
+        
+        if (show) {
+            badge.classList.remove("hidden");
+            countSpan.textContent = newFavoritesCount;
+        } else {
+            badge.classList.add("hidden");
+            countSpan.textContent = "0";
+        }
+    }
+
+    // دالة لإنشاء مراقب للإشعارات عند ظهور box234
+    function setupBox234Observer() {
+        const box234 = document.getElementById("box234");
+        
+        if (!box234) {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach((node) => {
+                            if (node.nodeType === 1 && (node.id === 'box234' || node.querySelector('#box234'))) {
+                                const targetBox = node.id === 'box234' ? node : node.querySelector('#box234');
+                                if (targetBox) {
+                                    setupNotificationsObserver(targetBox);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+
+            return;
+        }
+
+        setupNotificationsObserver(box234);
+    }
+
+    // دالة لإعداد المراقب على box234 للكشف عن الإشعارات
+    function setupNotificationsObserver(box234) {
+        const observer = new MutationObserver((mutations, obs) => {
+            let hasChanges = false;
+            
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList' || mutation.type === 'attributes') {
+                    hasChanges = true;
+                }
+            });
+
+            if (hasChanges && isVisible(box234)) {
+                if (newFavoritesCount > 0) {
+                    toggleNewFavoritesBadge(false);
+                    saveNewFavoritesCount(0);
+                    localStorage.setItem('newFavoritesIds', JSON.stringify([]));
+                }
+                obs.disconnect();
+            }
+        });
+
+        observer.observe(box234, { 
+            attributes: true, 
+            childList: true, 
+            subtree: true,
+            attributeFilter: ['class', 'style', 'display']
+        });
+
+        if (isVisible(box234) && newFavoritesCount > 0) {
+            toggleNewFavoritesBadge(false);
+            saveNewFavoritesCount(0);
+            localStorage.setItem('newFavoritesIds', JSON.stringify([]));
+            observer.disconnect();
+        }
+
+        const closeObserver = new MutationObserver((mutations) => {
+            let isClosed = false;
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && 
+                    (mutation.attributeName === 'class' || mutation.attributeName === 'style') &&
+                    !isVisible(box234)) {
+                    isClosed = true;
+                }
+            });
+
+            if (isClosed) {
+                setTimeout(() => {
+                    if (newFavoritesCount > 0) {
+                        setupNotificationsObserver(box234);
+                    }
+                }, 100);
+            }
+        });
+
+        closeObserver.observe(box234, {
+            attributes: true,
+            attributeFilter: ['class', 'style', 'display']
+        });
+    }
+
+    // دالة لعرض إشعار الفيديوهات الجديدة مع التحقق من نوع العملية
+    function showNewFavoritesNotification(count, operation = 'add') {
+        const badge = document.getElementById("newFavoritesBadge");
+        const countSpan = document.getElementById("newFavoritesCount");
+
+        if (!badge || !countSpan) return;
+
+        saveNewFavoritesCount(count);
+        
+        if (count > 0) {
+            toggleNewFavoritesBadge(true);
+            setupBox234Observer();
+        } else {
+            toggleNewFavoritesBadge(false);
+            saveNewFavoritesCount(0);
+        }
+    }
+
+    // دالة تتحقق إن كان العنصر ظاهر فعلياً على الشاشة
+    function isVisible(el) {
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") {
+            return false;
+        }
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0 && 
+               rect.top < window.innerHeight && 
+               rect.bottom > 0;
+    }
+
+    // دالة لتحديث عداد المفضلة
+    function updateFavoritesCounter(count) {
+        const counterSpan = document.getElementById("favoritesCounter");
+        if (counterSpan) {
+            if (count === 0) {
+                counterSpan.textContent = "0";
+                counterSpan.style.display = 'none';
+            } else {
+                counterSpan.textContent = count.toString();
+                counterSpan.style.display = 'inline';
+            }
+        }
+    }
+
+    // دالة لحذف جميع المفضلة
+    function clearAllFavorites() {
+        saveFavorites([]);
+        renderFavorites();
+        updateFavoritesCounter(0);
+        saveNewFavoritesCount(0);
+        localStorage.setItem('newFavoritesIds', JSON.stringify([]));
+        showNewFavoritesNotification(0, 'clear');
+        Object.keys(videosData).forEach(id => {
+            updateHeartButton(id, false);
+        });
+    }
+
+    // دالة لإضافة فيديو للمفضلة
+    function addToFavorites(videoData) {
+        const favorites = loadFavorites();
+        const exists = favorites.some(fav => fav.id === videoData.id);
+        if (!exists) {
+            favorites.unshift(videoData);
+            saveFavorites(favorites);
+            renderFavorites();
+            updateFavoritesCounter(favorites.length);
+            
+            const currentNewCount = loadNewFavoritesCount();
+            const newTotalCount = currentNewCount + 1;
+            saveNewFavoritesCount(newTotalCount);
+            
+            const newFavoritesIds = loadNewFavoritesIds();
+            newFavoritesIds.push(videoData.id);
+            localStorage.setItem('newFavoritesIds', JSON.stringify(newFavoritesIds));
+            
+            showNewFavoritesNotification(newTotalCount, 'add');
+            
+            return true;
+        }
+        return false;
+    }
+
+    // دالة لحذف فيديو من المفضلة
+    function removeFromFavorites(videoId) {
+        let favorites = loadFavorites();
+        const oldLength = favorites.length;
+        favorites = favorites.filter(fav => fav.id !== videoId);
+        saveFavorites(favorites);
+        renderFavorites();
+        updateFavoritesCounter(favorites.length);
+        
+        let newFavoritesIds = loadNewFavoritesIds();
+        const isNewFavorite = newFavoritesIds.includes(videoId);
+        newFavoritesIds = newFavoritesIds.filter(id => id !== videoId);
+        localStorage.setItem('newFavoritesIds', JSON.stringify(newFavoritesIds));
+        
+        let updatedCount = loadNewFavoritesCount();
+        if (isNewFavorite && updatedCount > 0) {
+            updatedCount = Math.max(0, updatedCount - 1);
+            saveNewFavoritesCount(updatedCount);
+            showNewFavoritesNotification(updatedCount, 'remove');
+        }
+        
+        Object.keys(videosData).forEach(id => {
+            updateHeartButton(id, isFavorited(id));
+        });
+        
+        return updatedCount;
+    }
+
+    // دالة لعرض المفضلة
+    function renderFavorites() {
+        const favorites = loadFavorites();
+        const container = document.getElementById("favoritesContainer");
+        const clearAllBtn = document.getElementById("clearAllBtn");
+        if (!container) return;
+        
+        updateFavoritesCounter(favorites.length);
+        
+        if (favorites.length === 0) {
+            container.innerHTML = '<div class="no-favorites">لا توجد فيديوهات في المفضلة</div>';
+            if (clearAllBtn) {
+                clearAllBtn.style.display = 'none';
+            }
+            return;
+        }
+
+        if (clearAllBtn) {
+            clearAllBtn.style.display = 'flex';
+        }
+
+        container.innerHTML = favorites.map(fav => `
+            <div class="favorite-item" data-video-id="${fav.id}">
+                <xx class="flex"><img class="favorite-thumbnail" src="${fav.thumbnail}" alt="${fav.title}"></xx>
+                <div class="fffrr">
+                    <div class="favorite-title">${fav.title}</div>
+                    <span class="favorite-date">${fav.date}</span>
+                </div>
+                <div class="favorite-meta">
+                    <a class="delete-favorite Wave-cloud ve" data-video-id="${fav.id}">
+                        <svg class="close-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
+                            <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // دالة للتحقق من وجود فيديو في المفضلة
+    function isFavorited(videoId) {
+        const favorites = loadFavorites();
+        return favorites.some(fav => fav.id === videoId);
+    }
+
+    // دالة لإنشاء أيقونة القلب
+    function createHeartIcon(filled = false) {
+        return filled ? 
+            '<svg class="heart-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' :
+            '<svg class="heart-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+    }
+
+    // دالة لتحديث حالة زر المفضلة
+    function updateHeartButton(videoId, isLiked) {
+        const button = document.querySelector(`#${videoId} .mbvideo-heart`);
+        if (button) {
+            const iconElement = button.querySelector('.heart-icon-container');
+            if (iconElement) {
+                iconElement.innerHTML = createHeartIcon(isLiked);
+                if (isLiked) {
+                    button.classList.add('liked', 'heart-check');
+                } else {
+                    button.classList.remove('liked', 'heart-check');
+                }
+            }
+        }
+    }
+
     // دالة لقص الصورة باستخدام canvas
     function cropThumbnailImage(imgElement, videoId, targetDiv) {
         const canvas = document.createElement("canvas");
@@ -36,10 +363,18 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
+    // تهيئة عداد الفيديوهات الجديدة عند تحميل الصفحة
+    newFavoritesCount = loadNewFavoritesCount();
+    if (newFavoritesCount > 0) {
+        showNewFavoritesNotification(newFavoritesCount, 'init');
+    } else {
+        toggleNewFavoritesBadge(false);
+    }
+
     // Check if videosData is defined
     if (typeof videosData === "undefined") {
         console.error("videosData is not defined. Ensure videosData.js is loaded correctly. Check the file path and ensure it is accessible.");
-        return; // Stop execution if videosData is not defined
+        return;
     }
 
     // إنشاء الفيديوهات ديناميكياً
@@ -50,7 +385,11 @@ document.addEventListener("DOMContentLoaded", () => {
         videoDiv.className = "mbvideo-d";
         videoDiv.id = id;
         videoDiv.innerHTML = `
-                <button class="mbvideo-heart Wave-cloud"><icon>heart</icon></button>
+            <button class="mbvideo-heart Wave-cloud" data-video-id="${id}">
+                <div class="heart-icon-container">
+                    ${createHeartIcon(false)}
+                </div>
+            </button>
             <div class="mbvideo-im Wave-cloud">
                 <img alt="Video Thumbnail" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg">
             </div>
@@ -76,18 +415,118 @@ document.addEventListener("DOMContentLoaded", () => {
                 const descElement = document.getElementById(`desc-${id}`);
                 const titleText = data.title || "لا يوجد وصف متاح";
                 descElement.textContent = titleText;
-                descElement.setAttribute("title", titleText); // إضافة خاصية title ديناميكيًا
+                descElement.setAttribute("title", titleText);
+                
                 const channelDiv = document.getElementById(`Views-${id}`);
                 channelDiv.textContent = data.author_name || "قناة غير معروفة";
+
+                window[`videoData_${id}`] = {
+                    id: id,
+                    title: titleText,
+                    author: data.author_name || "قناة غير معروفة",
+                    thumbnail: imgElement.src,
+                    videoId: videoId,
+                    url: videosData[id]
+                };
+
+                updateHeartButton(id, isFavorited(id));
             })
             .catch(error => {
                 console.error(`Error fetching description for video ${id}:`, error);
                 const descElement = document.getElementById(`desc-${id}`);
                 descElement.textContent = "فشل تحميل الوصف";
-                descElement.setAttribute("title", "فشل تحميل الوصف"); // إضافة title في حالة الخطأ
+                descElement.setAttribute("title", "فشل تحميل الوصف");
                 document.getElementById(`Views-${id}`).textContent = "فشل تحميل اسم القناة";
+                
+                window[`videoData_${id}`] = {
+                    id: id,
+                    title: "فشل تحميل الوصف",
+                    author: "فشل تحميل اسم القناة",
+                    thumbnail: imgElement.src,
+                    videoId: videoId,
+                    url: videosData[id]
+                };
+                
+                updateHeartButton(id, isFavorited(id));
             });
     });
+
+    // معالجة النقر على زر المفضلة
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.mbvideo-heart') && e.target.closest('.mbvideo-d')) {
+            e.stopPropagation();
+            const button = e.target.closest('.mbvideo-heart');
+            const videoId = button.dataset.videoId;
+            const videoData = window[`videoData_${videoId}`];
+            
+            if (!videoData) {
+                alert('بيانات الفيديو غير جاهزة بعد');
+                return;
+            }
+
+            const isCurrentlyLiked = isFavorited(videoId);
+            const iconContainer = button.querySelector('.heart-icon-container');
+
+            if (isCurrentlyLiked) {
+                removeFromFavorites(videoId);
+                if (iconContainer) {
+                    iconContainer.innerHTML = createHeartIcon(false);
+                }
+                button.classList.remove('liked', 'heart-check');
+            } else {
+                const newFavorite = {
+                    ...videoData,
+                    date: getDaysAgo(new Date().toISOString())
+                };
+                addToFavorites(newFavorite);
+                if (iconContainer) {
+                    iconContainer.innerHTML = createHeartIcon(true);
+                }
+                button.classList.add('liked', 'heart-check');
+            }
+            return;
+        }
+
+        if (e.target.closest('.delete-favorite')) {
+            e.stopPropagation();
+            e.preventDefault();
+            const button = e.target.closest('.delete-favorite');
+            const videoId = button.dataset.videoId;
+            removeFromFavorites(videoId);
+            
+            const heartButton = document.querySelector(`#${videoId} .mbvideo-heart`);
+            if (heartButton) {
+                const iconContainer = heartButton.querySelector('.heart-icon-container');
+                if (iconContainer) {
+                    iconContainer.innerHTML = createHeartIcon(false);
+                }
+                heartButton.classList.remove('liked', 'heart-check');
+            }
+            return;
+        }
+
+        if (e.target.closest('#clearAllBtn')) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (confirm('هل أنت متأكد من رغبتك في حذف جميع الفيديوهات من المفضلة؟')) {
+                clearAllFavorites();
+            }
+            return;
+        }
+
+        if (e.target.closest('.favorite-item') && !e.target.closest('.delete-favorite') && !e.target.closest('#clearAllBtn')) {
+            e.stopPropagation();
+            const item = e.target.closest('.favorite-item');
+            const videoId = item.dataset.videoId;
+            if (videoId && videosData[videoId]) {
+                playVideo(videoId);
+            }
+            return;
+        }
+    });
+
+    // عرض المفضلة عند التحميل
+    renderFavorites();
 
     let adTimes = [];
     let shownAdTimes = [];
@@ -105,14 +544,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let checkAdInterval = null;
     let currentVideoId = null;
 
-    // دالة لإزالة كلاس coco من جميع العناصر
     function removeCocoClass() {
         document.querySelectorAll('.mbvideo-im').forEach(div => {
             div.classList.remove('coco');
         });
+        document.querySelectorAll('.favorite-item').forEach(item => {
+            item.classList.remove('coco');
+        });
     }
 
-    // دالة لتوليد نقاط زمنية عشوائية للإعلانات
     function generateRandomAdTimes(duration, count = 3) {
         const times = [];
         const minGap = 10;
@@ -126,7 +566,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return times.sort((a, b) => a - b);
     }
 
-    // إضافة النقاط الصفراء على شريط التقدم
     function addYellowDots(duration) {
         const playerIframe = videoContainer.querySelector("iframe");
         if (!playerIframe) return;
@@ -149,7 +588,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // إزالة النقطة الصفراء بناءً على النقطة الزمنية
     function removeYellowDot(adTime, duration) {
         const progressBar = videoContainer.querySelector(".progress-bar");
         if (!progressBar) return;
@@ -164,7 +602,6 @@ document.addEventListener("DOMContentLoaded", () => {
         adTimes = adTimes.filter(time => Math.abs(time - adTime) >= 0.5);
     }
 
-    // تحميل YouTube IFrame API
     function loadYouTubeAPI() {
         if (window.YT && window.YT.Player) {
             return Promise.resolve();
@@ -180,7 +617,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // تهيئة مشغل الفيديو
     function initializePlayer(videoId) {
         return new Promise(resolve => {
             const iframe = videoContainer.querySelector("iframe");
@@ -204,13 +640,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // تشغيل الفيديو
-    async function playVideo(id) {
+    window.playVideo = async function(id) {
         currentVideoId = id;
         const videoURL = videosData[id] + "?enablejsapi=1";
         videoContainer.innerHTML = `<iframe src="${videoURL}" allowfullscreen></iframe>`;
         modal.style.display = "flex";
-        // إزالة كلاس coco من جميع العناصر وإضافته للفيديو الحالي
+        
         removeCocoClass();
         const videoDiv = document.getElementById(id);
         if (videoDiv) {
@@ -219,6 +654,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 mbvideoIm.classList.add("coco");
             }
         }
+        
+        const favoriteItem = document.querySelector(`[data-video-id="${id}"]`);
+        if (favoriteItem) {
+            favoriteItem.classList.add("coco");
+        }
+        
         updateNavigationButtons();
         try {
             await loadYouTubeAPI();
@@ -228,7 +669,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // تحديث حالة أزرار التنقل
     function updateNavigationButtons() {
         const videoIds = Object.keys(videosData);
         const currentIndex = videoIds.indexOf(currentVideoId);
@@ -236,14 +676,14 @@ document.addEventListener("DOMContentLoaded", () => {
         nextVideoBtn.disabled = currentIndex >= videoIds.length - 1;
     }
 
-    // تشغيل الفيديو عند الضغط على div
     Object.keys(videosData).forEach(id => {
-        document.getElementById(id).addEventListener("click", () => {
-            playVideo(id);
+        document.getElementById(id).addEventListener("click", (e) => {
+            if (!e.target.closest('.mbvideo-heart')) {
+                playVideo(id);
+            }
         });
     });
 
-    // أزرار التنقل بين الفيديوهات
     prevVideoBtn.addEventListener("click", () => {
         const videoIds = Object.keys(videosData);
         const currentIndex = videoIds.indexOf(currentVideoId);
@@ -266,7 +706,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // فتح الفيديو في يوتيوب
     openYouTubeBtn.addEventListener("click", () => {
         if (currentVideoId && videosData[currentVideoId]) {
             const youtubeURL = videosData[currentVideoId].replace("/embed/", "/watch?v=");
@@ -283,7 +722,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // التحقق من النقاط الزمنية لعرض الإعلان
     function checkAdTime() {
         checkAdInterval = setInterval(() => {
             if (!player || !player.getCurrentTime) {
@@ -301,7 +739,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500);
     }
 
-    // عرض الإعلان مع العداد التنازلي
     function showAd(adTime) {
         adModal.style.display = "flex";
         let countdown = 5;
@@ -326,7 +763,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1000);
     }
 
-    // إغلاق النافذة وإزالة الفيديو
     closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
         videoContainer.innerHTML = "";
@@ -337,10 +773,9 @@ document.addEventListener("DOMContentLoaded", () => {
         adTimes = [];
         shownAdTimes = [];
         currentVideoId = null;
-        removeCocoClass(); // إزالة كلاس coco عند إغلاق النافذة
+        removeCocoClass();
     });
 
-    // إغلاق عند الضغط خارج المحتوى
     modal.addEventListener("click", (e) => {
         if (e.target === modal) {
             modal.style.display = "none";
@@ -352,10 +787,20 @@ document.addEventListener("DOMContentLoaded", () => {
             adTimes = [];
             shownAdTimes = [];
             currentVideoId = null;
-            removeCocoClass(); // إزالة كلاس coco عند إغلاق النافذة
+            removeCocoClass();
         }
     });
+
+    window.removeFromFavorites = removeFromFavorites;
+    window.clearAllFavorites = clearAllFavorites;
+    window.playVideo = playVideo;
+    window.renderFavorites = renderFavorites;
 });
+
+
+
+
+
 
 
 
@@ -543,4 +988,493 @@ document.addEventListener('DOMContentLoaded', function() {
         childList: true,
         subtree: true
     });
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+const btn = document.getElementById('btn');
+const box = document.getElementById('box234');
+const videoModal = document.getElementById('videoModal'); // الديف الموجود بالفعل
+const overlay = document.getElementById('ffffd'); // طبقة الـ overlay
+
+// دالة لإعادة تعيين الـ styles الأساسية للـ box
+function resetBoxStyles() {
+  box.style.transform = '';
+  box.style.opacity = '';
+  box.style.transition = '';
+  box.style.marginLeft = '';
+  box.style.marginRight = '';
+  box.style.display = '';
+  box.removeAttribute('data-box-height');
+  box.removeAttribute('data-original-margin');
+  box.classList.remove('swiping', 'closing');
+}
+
+// دالة لإظهار box234 مع الـ overlay
+function showBox234() {
+  // إعادة تعيين جميع الـ styles أولاً
+  resetBoxStyles();
+  
+  box.classList.add('visible');
+  box.setAttribute('aria-hidden', 'false');
+  btn.classList.add('active');
+  
+  // تحديد موضع البداية بناءً على حجم الشاشة
+  if (window.innerWidth < 400) {
+    // في وضع الهاتف: يبدأ من الأسفل مع margin
+    const boxHeight = box.offsetHeight;
+    const marginValue = '16px';
+    
+    // البداية: خارج الشاشة مع margin صفر
+    box.style.transform = `translateY(${boxHeight}px)`;
+    box.style.opacity = '0';
+    box.style.marginLeft = '0';
+    box.style.marginRight = '0';
+    box.style.transition = 'none'; // إيقاف الانتقال مؤقتاً
+    
+    // تشغيل الرسوم المتحركة بعد frame واحد
+    requestAnimationFrame(() => {
+      box.style.transform = 'translateY(0)';
+      box.style.opacity = '1';
+      box.style.marginLeft = marginValue;
+      box.style.marginRight = marginValue;
+      box.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out';
+    });
+    
+    // حفظ قيمة المargin الأصلية
+    box.dataset.originalMargin = marginValue;
+    
+    // تشغيل نظام السحب في وضع الهاتف
+    startSwipeDetection();
+  } else {
+    // في وضع الكمبيوتر: ظهور عادي بدون حركة
+    box.style.transform = '';
+    box.style.opacity = '1';
+    box.style.transition = 'opacity 0.3s ease-out';
+  }
+  
+  // إظهار الـ overlay
+  if (overlay) {
+    overlay.classList.add('active');
+    overlay.style.display = 'block';
+  }
+}
+
+// دالة لإخفاء box234 مع الـ overlay
+function hideBox234() {
+  box.classList.remove('visible');
+  box.setAttribute('aria-hidden', 'true');
+  btn.classList.remove('active');
+  
+  // إخفاء الـ overlay
+  if (overlay) {
+    overlay.classList.remove('active');
+    overlay.style.display = 'none';
+  }
+  
+  // إيقاف نظام السحب
+  stopSwipeDetection();
+  
+  // إعادة تعيين الـ styles
+  resetBoxStyles();
+}
+
+// دالة للإغلاق المتحرك (سحب للأسفل واختفاء مع تقليل المargin)
+function animateClose() {
+  if (box.classList.contains('closing')) return; // منع التكرار
+  
+  const boxHeight = box.offsetHeight;
+  box.dataset.boxHeight = boxHeight;
+  const originalMargin = box.dataset.originalMargin || '16px';
+  
+  // إضافة كلاس الإغلاق
+  box.classList.add('closing');
+  
+  // تحريك العنصر للأسفل بمقدار كامل ارتفاعه مع تقليل المargin تدريجياً
+  box.style.transform = `translateY(${boxHeight}px)`;
+  box.style.opacity = '0';
+  box.style.marginLeft = '0';
+  box.style.marginRight = '0';
+  box.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out';
+  
+  // إخفاء العنصر بعد انتهاء الرسوم المتحركة
+  setTimeout(() => {
+    if (box.classList.contains('closing')) {
+      hideBox234();
+      box.classList.remove('closing');
+    }
+  }, 400);
+}
+
+// متغيرات لنظام السحب
+let startY = 0;
+let currentY = 0;
+let isSwiping = false;
+
+// دالة لتشغيل كشف السحب
+function startSwipeDetection() {
+  if (window.innerWidth >= 400) return; // فقط في وضع الهاتف
+  
+  // إضافة event listeners للسحب على العنصر نفسه
+  box.addEventListener('touchstart', handleTouchStart, { passive: true });
+  box.addEventListener('touchmove', handleTouchMove, { passive: false });
+  box.addEventListener('touchend', handleTouchEnd, { passive: true });
+  
+  // للماوس أيضاً (للاختبار على الكمبيوتر)
+  box.addEventListener('mousedown', handleMouseDown);
+}
+
+// دالة لإيقاف كشف السحب
+function stopSwipeDetection() {
+  box.removeEventListener('touchstart', handleTouchStart);
+  box.removeEventListener('touchmove', handleTouchMove);
+  box.removeEventListener('touchend', handleTouchEnd);
+  box.removeEventListener('mousedown', handleMouseDown);
+  document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('mouseup', handleMouseUp);
+}
+
+// معالجة بداية اللمس
+function handleTouchStart(e) {
+  if (window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  startY = e.touches[0].clientY;
+  isSwiping = true;
+  currentY = startY;
+  
+  // حفظ ارتفاع العنصر وقيمة المargin في بداية السحب
+  const boxHeight = box.offsetHeight;
+  const originalMargin = box.dataset.originalMargin || '16px';
+  box.dataset.boxHeight = boxHeight;
+  box.dataset.originalMargin = originalMargin;
+  
+  // حفظ المargin الحالي
+  box.dataset.currentMargin = originalMargin;
+  
+  // إضافة كلاس للدلالة على بداية السحب
+  box.classList.add('swiping');
+  
+  // حفظ الـ transition الأصلي
+  box.dataset.originalTransition = box.style.transition;
+}
+
+// معالجة حركة اللمس
+function handleTouchMove(e) {
+  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  // منع التمرير الافتراضي أثناء السحب
+  e.preventDefault();
+  
+  currentY = e.touches[0].clientY;
+  
+  const deltaY = currentY - startY;
+  
+  // تحريك العنصر مع السحب (للأسفل فقط)
+  if (deltaY > 0) {
+    const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+    const originalMargin = box.dataset.originalMargin || '16px';
+    const translateY = Math.min(deltaY, boxHeight); // الحد الأقصى هو ارتفاع العنصر
+    
+    // حساب المargin التدريجي (يتناقص من 16px إلى 0)
+    const marginPercentage = 1 - (translateY / boxHeight);
+    const currentMargin = Math.max(marginPercentage * 16, 0); // تحويل إلى بكسل
+    
+    box.style.transform = `translateY(${translateY}px)`;
+    box.style.marginLeft = `${currentMargin}px`;
+    box.style.marginRight = `${currentMargin}px`;
+    box.style.transition = 'none';
+    
+    // تحديث الشفافية بناءً على مقدار السحب
+    const opacity = Math.max(1 - (deltaY / boxHeight), 0);
+    box.style.opacity = opacity;
+    
+    // حفظ المargin الحالي للاستخدام لاحقاً
+    box.dataset.currentMargin = `${currentMargin}px`;
+  }
+}
+
+// معالجة انتهاء اللمس
+function handleTouchEnd(e) {
+  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  isSwiping = false;
+  
+  const deltaY = currentY - startY;
+  const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+  const halfHeight = boxHeight / 2;
+  const originalMargin = box.dataset.originalMargin || '16px';
+  
+  // إرجاع الـ transition الأصلي
+  box.style.transition = box.dataset.originalTransition || 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out';
+  
+  // التحقق من السحب للأسفل بما فيه الكفاية (نصف ارتفاع العنصر)
+  if (deltaY > halfHeight) {
+    // إكمال الحركة للأسفل وإغلاق العنصر
+    animateClose();
+  } else {
+    // إرجاع العنصر لمكانه الأصلي مع المargin الأصلي
+    box.style.transform = 'translateY(0)';
+    box.style.opacity = '1';
+    box.style.marginLeft = originalMargin;
+    box.style.marginRight = originalMargin;
+    box.classList.remove('swiping');
+  }
+  
+  // إعادة تعيين المتغيرات
+  startY = 0;
+  currentY = 0;
+  delete box.dataset.originalTransition;
+}
+
+// معالجات الماوس (للاختبار)
+function handleMouseDown(e) {
+  if (window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  startY = e.clientY;
+  isSwiping = true;
+  currentY = startY;
+  
+  // حفظ ارتفاع العنصر وقيمة المargin
+  const boxHeight = box.offsetHeight;
+  const originalMargin = box.dataset.originalMargin || '16px';
+  box.dataset.boxHeight = boxHeight;
+  box.dataset.originalMargin = originalMargin;
+  box.dataset.currentMargin = originalMargin;
+  
+  // حفظ الـ transition الأصلي
+  box.dataset.originalTransition = box.style.transition;
+  
+  box.classList.add('swiping');
+  
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+  
+  e.preventDefault();
+}
+
+function handleMouseMove(e) {
+  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  currentY = e.clientY;
+  const deltaY = currentY - startY;
+  
+  if (deltaY > 0) {
+    const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+    const originalMargin = box.dataset.originalMargin || '16px';
+    const translateY = Math.min(deltaY, boxHeight);
+    
+    // حساب المargin التدريجي
+    const marginPercentage = 1 - (translateY / boxHeight);
+    const currentMargin = Math.max(marginPercentage * 16, 0);
+    
+    box.style.transform = `translateY(${translateY}px)`;
+    box.style.marginLeft = `${currentMargin}px`;
+    box.style.marginRight = `${currentMargin}px`;
+    box.style.transition = 'none';
+    
+    // تحديث الشفافية
+    const opacity = Math.max(1 - (deltaY / boxHeight), 0);
+    box.style.opacity = opacity;
+    
+    box.dataset.currentMargin = `${currentMargin}px`;
+  }
+}
+
+function handleMouseUp(e) {
+  if (!isSwiping || window.innerWidth >= 400 || box.classList.contains('closing')) return;
+  
+  isSwiping = false;
+  
+  const deltaY = currentY - startY;
+  const boxHeight = parseFloat(box.dataset.boxHeight) || box.offsetHeight;
+  const halfHeight = boxHeight / 2;
+  const originalMargin = box.dataset.originalMargin || '16px';
+  
+  // إرجاع الـ transition الأصلي
+  box.style.transition = box.dataset.originalTransition || 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.3s ease-out';
+  
+  if (deltaY > halfHeight) {
+    // إكمال الحركة للأسفل وإغلاق العنصر
+    animateClose();
+  } else {
+    // إرجاع العنصر لمكانه الأصلي مع المargin الأصلي
+    box.style.transform = 'translateY(0)';
+    box.style.opacity = '1';
+    box.style.marginLeft = originalMargin;
+    box.style.marginRight = originalMargin;
+    box.classList.remove('swiping');
+  }
+  
+  // إزالة event listeners الماوس
+  document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('mouseup', handleMouseUp);
+  
+  startY = 0;
+  currentY = 0;
+  delete box.dataset.originalTransition;
+}
+
+// عند النقر على الزر: أضف أو ازل الكلاسات المناسبة
+btn.addEventListener('click', (e) => {
+  e.preventDefault(); // منع السلوك الافتراضي
+  
+  if (box.classList.contains('visible') || box.classList.contains('closing')) {
+    // إذا كان العنصر مرئياً أو في حالة الإغلاق، أخفِه مباشرة
+    if (box.classList.contains('closing')) {
+      // إيقاف الرسوم المتحركة وإخفاء فوري
+      box.classList.remove('closing');
+      box.style.transition = 'none';
+      hideBox234();
+      // إعادة تعيين الـ transition بعد فترة قصيرة
+      setTimeout(() => {
+        box.style.transition = '';
+      }, 50);
+    } else {
+      hideBox234();
+    }
+  } else {
+    // إذا لم يكن مرئياً، أظهره
+    showBox234();
+  }
+});
+
+// إضافة event listener للـ overlay لإخفاء box234 عند النقر عليه
+if (overlay) {
+  overlay.addEventListener('click', (e) => {
+    // التأكد من أن النقر كان على الـ overlay نفسه وليس على المحتوى الداخلي
+    if (e.target === overlay) {
+      if (box.classList.contains('closing')) {
+        box.classList.remove('closing');
+        box.style.transition = 'none';
+        hideBox234();
+        setTimeout(() => {
+          box.style.transition = '';
+        }, 50);
+      } else {
+        hideBox234();
+      }
+    }
+  });
+  
+  // دعم لللمس والماوس
+  overlay.addEventListener('touchstart', (e) => {
+    if (e.target === overlay) {
+      if (box.classList.contains('closing')) {
+        box.classList.remove('closing');
+        box.style.transition = 'none';
+        hideBox234();
+        setTimeout(() => {
+          box.style.transition = '';
+        }, 50);
+      } else {
+        hideBox234();
+      }
+    }
+  }, { passive: true });
+}
+
+// مراقبة تغيير حجم الشاشة لتفعيل/إلغاء نظام السحب
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 400 && box.classList.contains('visible')) {
+    // إذا أصبح العرض أكبر من 400، أوقف كشف السحب
+    stopSwipeDetection();
+    
+    // تطبيق تأثير الظهور العادي في الكمبيوتر
+    if (box.classList.contains('visible')) {
+      box.style.transform = '';
+      box.style.opacity = '1';
+      box.style.marginLeft = '';
+      box.style.marginRight = '';
+      box.style.transition = 'opacity 0.3s ease-out';
+      delete box.dataset.originalMargin;
+    }
+  } else if (window.innerWidth < 400 && box.classList.contains('visible')) {
+    // إذا أصبح العرض أصغر من 400 و box234 مرئي، ابدأ كشف السحب
+    startSwipeDetection();
+    
+    // تطبيق تأثير الظهور من الأسفل في الهاتف مع margin
+    if (box.classList.contains('visible')) {
+      const boxHeight = box.offsetHeight;
+      const marginValue = '16px';
+      box.dataset.originalMargin = marginValue;
+      
+      box.style.transform = `translateY(${boxHeight}px)`;
+      box.style.opacity = '0';
+      box.style.marginLeft = '0';
+      box.style.marginRight = '0';
+      box.style.transition = 'none';
+      
+      requestAnimationFrame(() => {
+        box.style.transform = 'translateY(0)';
+        box.style.opacity = '1';
+        box.style.marginLeft = marginValue;
+        box.style.marginRight = marginValue;
+        box.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-out, margin 0.4s ease-out';
+      });
+    }
+  }
+});
+
+// مراقبة ظهور videoModal وإخفاء box234
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+      const isVideoModalVisible = videoModal.classList.contains('show') || 
+                                  videoModal.style.display === 'block' || 
+                                  videoModal.style.visibility === 'visible';
+      
+      if (isVideoModalVisible) {
+        // إخفاء box234 عند ظهور videoModal
+        if (box.classList.contains('closing')) {
+          box.classList.remove('closing');
+          box.style.transition = 'none';
+          hideBox234();
+          setTimeout(() => {
+            box.style.transition = '';
+          }, 50);
+        } else {
+          hideBox234();
+        }
+      }
+    }
+  });
+});
+
+// مراقبة التغييرات في classList أو style للـ videoModal
+observer.observe(videoModal, {
+  attributes: true,
+  attributeFilter: ['class', 'style']
+});
+
+// مراقبة display style كبديل إذا لم يكن يعتمد على class
+const styleObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+      const computedStyle = window.getComputedStyle(videoModal);
+      const isVideoModalVisible = computedStyle.display !== 'none' && 
+                                  computedStyle.visibility !== 'hidden';
+      
+      if (isVideoModalVisible) {
+        // إخفاء box234 عند ظهور videoModal
+        if (box.classList.contains('closing')) {
+          box.classList.remove('closing');
+          box.style.transition = 'none';
+          hideBox234();
+          setTimeout(() => {
+            box.style.transition = '';
+          }, 50);
+        } else {
+          hideBox234();
+        }
+      }
+    }
+  });
+});
+
+styleObserver.observe(videoModal, {
+  attributes: true,
+  attributeFilter: ['style']
+});
 });
