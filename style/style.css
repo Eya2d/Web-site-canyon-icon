@@ -79,6 +79,10 @@ x a::before {
     background-color: rgb(65, 147, 255);
 }
 
+body .hidden {
+    display: none;
+}
+
 
 /* -------------- */
 header {
@@ -114,7 +118,7 @@ header {
     margin-right: 7px;
 }
 
-.header-link a {
+.header-link .ve {
     position: relative;
     display: flex;
     justify-content: center;
@@ -127,10 +131,10 @@ header {
     margin-left: 7px;
     color: rgba(61, 64, 77, 0.849);
 }
-.header-link a:hover {
+.header-link .ve:hover {
     background: rgba(61, 64, 77, 0.048);
 }
-.header-link a svg {
+.header-link .ve svg {
     height: 18px;
 }
 .he-h {
@@ -151,8 +155,44 @@ header {
     margin: -5px;
     box-shadow: 0px 1px 3px #3a3e5154;
 }
-.he-h a {
+.he-h .ve {
     margin: 0;
+}
+
+.heart {
+    position: absolute;
+    display: none;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    margin-top: 30px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1100;
+    right: 0;
+    overflow-y: auto;
+    width: 480px;
+    min-height: 460px;
+    max-height: 642px;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
+}
+body .heart-menu {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 0 10px;
+    padding-left: 18px;
+    justify-content: space-between;
+    height: 49px;
+    border-bottom: solid 1px #d1d9e0;
+}
+body .heart-menu .ve {
+    outline: none;
+}
+.heart-div {
+    /* height: 92.2%; */
 }
 /* .he-y svg {
     fill: #ff0033;
@@ -349,6 +389,7 @@ header {
 
 #videoModal {
     display: none;
+    user-select: none;
     position: fixed;
     z-index: 10000;
     top: 0;
@@ -619,4 +660,116 @@ body .mbvideo-heart {
     height: 22px;
     top: 1px;
     position: relative;
+}
+
+.favorite-item {
+    cursor: pointer;
+    display: flex;
+    padding: 16px;
+    align-items: flex-start;
+}
+.favorite-item:hover {
+    background: rgb(0 0 0 / 5%);
+}
+.favorite-item .ve {
+    outline: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: -7px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #0000;
+}
+.favorite-item .ve svg {
+    height: 20px;
+    width: 20px;
+}
+xx {
+    overflow: hidden;
+    height: 53px;
+    border-radius: 8px;
+}
+.favorite-item img {
+    height: 73px;
+}
+.favorite-title {
+    padding-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    max-height: 110px;
+}
+.favorite-meta {
+    display: flex;
+    position: relative;
+    align-items: end;
+    padding-bottom: 5px;
+    width: 40px;
+}
+.fffrr {
+    flex: 1 1;
+    margin-left: 8px;
+}
+.favorite-date {
+    opacity: .6;
+}
+
+.heart-check svg {
+    animation: check 0.3s;
+    height: 20px;
+    width: 22px;
+    color: #ca76ff;
+}
+/* @keyframes check {
+    0% {
+        transform: scale(1.0);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+} */
+
+#box234.visible {
+    display: block;        /* نترك display:block لإظهار العنصر */
+    opacity: 1;
+}
+
+
+/* تصميم طبقة الـ overlay */
+#ffffd {
+  position: fixed;
+  user-select: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #c8d1da66; /* خلفية شفافة سوداء */
+  z-index: 999; /* أقل من z-index للـ box234 */
+  display: none; /* مخفي افتراضياً */
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* حالة الظهور */
+#ffffd.active {
+  opacity: 1;
+}
+
+/* للشاشات المحمولة */
+#ffffd:active {
+  opacity: 0.8;
+}
+
+.no-favorites {
+    width: max-content;
+    margin: auto;
+    padding: 14px 0;
 }
