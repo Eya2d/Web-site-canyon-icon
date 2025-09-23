@@ -173,7 +173,7 @@ header {
     overflow-y: auto;
     width: 480px;
     min-height: 460px;
-    max-height: 642px;
+    max-height: 460px;
     border-radius: 20px;
     background: white;
     box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
@@ -789,4 +789,5 @@ xx {
     margin: auto;
     padding: 14px 0;
 }
+
 
