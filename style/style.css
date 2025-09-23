@@ -664,9 +664,11 @@ body .mbvideo-heart {
 }
 
 .favorite-item {
+    position: relative;
+    overflow: hidden;
     cursor: pointer;
     display: flex;
-    padding: 16px;
+    padding: 0;
     align-items: flex-start;
     color: rgba(61, 64, 77, 0.849);
     border: none;
@@ -677,7 +679,12 @@ body .mbvideo-heart {
     margin: 4px 4px;
     border-radius: 10px;
 }
-.favorite-item:hover {
+.fffder {
+    display: flex;
+    flex: 1 1;
+    padding: 16px;
+}
+.fffder:hover {
     background: rgb(0 0 0 / 5%);
 }
 /* .favorite-item:focus {
@@ -718,14 +725,18 @@ xx {
 }
 .favorite-meta {
     display: flex;
-    position: relative;
+    position: absolute;
     align-items: end;
     padding-bottom: 5px;
     width: 40px;
+    top: 0;
+    right: 0;
+    margin: 16px;
 }
 .fffrr {
     flex: 1 1;
     margin-left: 8px;
+    margin-right: 34px;
 }
 .favorite-date {
     opacity: .5;
@@ -789,5 +800,4 @@ xx {
     margin: auto;
     padding: 14px 0;
 }
-
 
