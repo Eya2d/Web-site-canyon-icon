@@ -187,7 +187,7 @@ body .heart-menu {
     padding-left: 18px;
     justify-content: space-between;
     height: 49px;
-    border-bottom: solid 1px #d1d9e0;
+    border-bottom: solid 1px rgb(0 0 0 / 10%);
 }
 body .heart-menu .ve {
     outline: none;
@@ -674,6 +674,8 @@ body .mbvideo-heart {
     background: #0000;
     text-align: -webkit-left;
     font-size: 14px;
+    margin: 4px 4px;
+    border-radius: 10px;
 }
 .favorite-item:hover {
     background: rgb(0 0 0 / 5%);
@@ -787,3 +789,4 @@ xx {
     margin: auto;
     padding: 14px 0;
 }
+
