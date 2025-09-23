@@ -116,7 +116,7 @@
     background-color: #5a63747d;
     }
 }
-@media screen and (max-height:600px) {
+@media screen and (max-height:400px) {
     .desgg {
         display: flex;
     }
