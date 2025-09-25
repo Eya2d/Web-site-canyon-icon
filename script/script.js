@@ -1497,18 +1497,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
-  const darkBtn = document.getElementById("darkModeBtn");
-    const body = document.body;
+      const darkBtn = document.getElementById("darkModeBtn");
+      const body = document.body;
 
-    darkBtn.addEventListener("click", () => {
-      body.classList.toggle("body-dark");
-
-      // تغيير محتوى الزر حسب الحالة
-      if (body.classList.contains("body-dark")) {
-        darkBtn.innerHTML = '<icon>sun</icon>'; // وضع نهاري
-      } else {
-        darkBtn.innerHTML = '<icon>moon</icon>'; // وضع ليلي
+      // دالة لتحديث شكل الزر
+      function updateButton() {
+        if (body.classList.contains("body-dark")) {
+          darkBtn.innerHTML = '<icon class="icon">sun</icon>'; // نهاري
+        } else {
+          darkBtn.innerHTML = '<icon class="icon">moon</icon>'; // ليلي
+        }
       }
+
+      // تحقق من LocalStorage
+      const savedTheme = localStorage.getItem("theme");
+
+      if (savedTheme) {
+        if (savedTheme === "dark") {
+          body.classList.add("body-dark");
+        }
+      } else {
+        // إذا لم يوجد حفظ، نتبع تفضيل النظام
+        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          body.classList.add("body-dark");
+        }
+      }
+
+      // تحديث الزر عند تحميل الصفحة
+      updateButton();
+
+      // عند الضغط على الزر
+      darkBtn.addEventListener("click", () => {
+        body.classList.toggle("body-dark");
+
+        // حفظ الحالة
+        if (body.classList.contains("body-dark")) {
+          localStorage.setItem("theme", "dark");
+        } else {
+          localStorage.setItem("theme", "light");
+        }
+
+        // تحديث الزر
+        updateButton();
+      });
     });
-});
