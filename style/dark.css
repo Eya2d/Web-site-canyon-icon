@@ -54,6 +54,9 @@
 .body-dark .ripple {
     background: rgba(255, 255, 255, 0.116);
 }
+.body-dark .mbvideo-heart .ripple {
+    background: rgba(122, 122, 122, 0.116);
+}
 .body-dark .favorite-item .ve, .body-dark .heart-menu .ve {
     outline: none;
 }
@@ -62,4 +65,7 @@
 }
 .body-dark .div-video button:active svg {
     color: rgb(83, 157, 255);
+}
+.body-dark .heart-menu::before {
+    background-color: #ffffffba;
 }
