@@ -281,11 +281,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         container.innerHTML = favorites.map(fav => `
             <button class="favorite-item" data-video-id="${fav.id}">
+              <div class="fffder">
                 <xx class="flex"><img class="favorite-thumbnail" src="${fav.thumbnail}" alt="${fav.title}"></xx>
                 <div class="fffrr">
                     <div class="favorite-title">${fav.title}</div>
                     <span class="favorite-date">${fav.date}</span>
                 </div>
+              </div>
                 <div class="favorite-meta">
                     <a class="delete-favorite Wave-cloud ve" data-video-id="${fav.id}">
                         <svg class="close-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -1491,4 +1493,22 @@ document.addEventListener("DOMContentLoaded", function () {
     attributes: true,
     attributeFilter: ["style"],
   });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const darkBtn = document.getElementById("darkModeBtn");
+    const body = document.body;
+
+    darkBtn.addEventListener("click", () => {
+      body.classList.toggle("body-dark");
+
+      // تغيير محتوى الزر حسب الحالة
+      if (body.classList.contains("body-dark")) {
+        darkBtn.innerHTML = '<icon>sun</icon>'; // وضع نهاري
+      } else {
+        darkBtn.innerHTML = '<icon>moon</icon>'; // وضع ليلي
+      }
+    });
 });
