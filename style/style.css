@@ -161,6 +161,7 @@ header {
 }
 
 .heart {
+    transition: 0.2s;
     position: absolute;
     scrollbar-color: #888 #f1f1f100;
     display: none;
@@ -812,7 +813,7 @@ xx:active img {
 }
 
 /* للشاشات المحمولة */
-#ffffd:active, #videoModal:active:before {
+#ffffd:active, #videoModal::before:active {
   background-color: #c8d1da4d;
   transition: ease 0.1s;
 }
@@ -835,3 +836,4 @@ xx:active img {
         
     }
 }
+
