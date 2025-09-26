@@ -675,6 +675,9 @@ body .mbvideo-heart {
 }
 
 .favorite-item {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0;
     position: relative;
     overflow: hidden;
     cursor: pointer;
