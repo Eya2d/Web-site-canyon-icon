@@ -32,7 +32,7 @@
 .body-dark #ffffd, .body-dark #videoModal::before {
     background-color: #00000066;
 }
-.body-dark #ffffd:active, .body-dark #videoModal:active:before  {
+.body-dark #ffffd:active, .body-dark #videoModal::before:active  {
     background-color: #00000048;
 }
 .body-dark .favorite-item {
@@ -72,3 +72,4 @@
 .body-dark .heart-menu::before {
     background-color: #ffffffba;
 }
+
