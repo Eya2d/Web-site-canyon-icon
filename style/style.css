@@ -162,6 +162,7 @@ header {
 
 .heart {
     position: absolute;
+    scrollbar-color: #888 #f1f1f100;
     display: none;
     overflow-y: auto;
     scrollbar-width: thin;
@@ -398,9 +399,18 @@ body .heart-menu .ve {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #c8d1da66;
     justify-content: center;
     align-items: center;
+}
+#videoModal::before {
+    transition: ease 0.3s;
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #c8d1da66;
 }
 .modal-content {
     background: rgb(255 255 255);
@@ -712,6 +722,13 @@ xx {
     height: 53px;
     border-radius: 8px;
 }
+xx img {
+    transition: ease 0.3s;
+}
+xx:active img {
+    transition: ease 0.1s;
+    transform: scale(1.1);
+}
 .favorite-item img {
     height: 73px;
 }
@@ -772,6 +789,7 @@ xx {
 
 /* تصميم طبقة الـ overlay */
 #ffffd {
+    transition: ease 0.3s;
   position: fixed;
   user-select: none;
   top: 0;
@@ -783,7 +801,6 @@ xx {
   display: none; /* مخفي افتراضياً */
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.1s ease-in-out;
 }
 
 /* حالة الظهور */
@@ -792,8 +809,9 @@ xx {
 }
 
 /* للشاشات المحمولة */
-#ffffd:active {
-  opacity: 0.8;
+#ffffd:active, #videoModal:active:before {
+  background-color: #c8d1da4d;
+  transition: ease 0.1s;
 }
 
 .no-favorites {
