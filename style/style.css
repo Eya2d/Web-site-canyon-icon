@@ -140,7 +140,7 @@ header {
 .he-h {
     position: relative;
 }
-.he-h zo {
+zo  {
     position: absolute;
     user-select: none;
     z-index: 5;
@@ -161,7 +161,6 @@ header {
 }
 
 .heart {
-    transition: 0.2s;
     position: absolute;
     scrollbar-color: #888 #f1f1f100;
     display: none;
@@ -392,6 +391,7 @@ body .heart-menu .ve {
 }
 
 #videoModal {
+    transition: ease 0.3s;
     display: none;
     user-select: none;
     position: fixed;
@@ -402,15 +402,6 @@ body .heart-menu .ve {
     height: 100%;
     justify-content: center;
     align-items: center;
-}
-#videoModal::before {
-    transition: ease 0.3s;
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
     background: #c8d1da66;
 }
 .modal-content {
@@ -813,7 +804,7 @@ xx:active img {
 }
 
 /* للشاشات المحمولة */
-#ffffd:active, #videoModal::before:active {
+#ffffd:active, #videoModal:active {
   background-color: #c8d1da4d;
   transition: ease 0.1s;
 }
@@ -837,3 +828,67 @@ xx:active img {
     }
 }
 
+.jon {
+    position: relative;
+    z-index: 10;
+    margin-left: 7px;
+}
+.myElement.active .jon-div {
+    height: 129px;
+}
+.jon .ve {
+    margin: 0;
+}
+.jon-div {
+    transition: ease 0.5s;
+    padding-top: 22px;
+    padding-left: 1px;
+    padding-right: 1px;
+    position: absolute;
+    top: 25px;
+    height: 0;
+    overflow: hidden;
+}
+.jon-div .ve {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0;
+    margin-bottom: 7px;
+}
+.jon-div .ve {
+    background: #ffffffba;
+}
+.jon-div .ve:hover {
+    background: #ffffffee;
+}
+
+
+/* lange */
+.lange {
+    position: relative;
+    z-index: 10;
+    margin-left: 7px;
+}
+.lange .ve {
+    margin: 0;
+}
+.lange-div {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0;
+    transition: ease 0.3s;
+    position: absolute;
+    top: 30px;
+    right: -10px;
+    margin-top: 10px;
+    overflow: hidden;
+    height: 0;
+    padding: 0;
+}
+.myElement.active .lange-div {
+    height: 342px;
+    padding: 7px 5px;
+}
+body #translation_buttons {
+    max-height: 226px;
+}
