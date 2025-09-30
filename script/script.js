@@ -1544,3 +1544,43 @@ document.addEventListener("DOMContentLoaded", function () {
         updateButton();
       });
     });
+    
+
+    
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+  var elements = document.querySelectorAll(".myElement");
+
+  elements.forEach(function (element) {
+    // عند الضغط (ماوس أو لمس) على العنصر
+    function activate(event) {
+      event.stopPropagation();
+
+      // إزالة الكلاس من جميع العناصر أولاً
+      elements.forEach(function (el) {
+        el.classList.remove("active");
+      });
+
+      // إضافة الكلاس للعنصر المضغوط
+      element.classList.add("active");
+    }
+
+    element.addEventListener("mousedown", activate);
+    element.addEventListener("touchstart", activate);
+  });
+
+  // عند الضغط خارج العناصر (ماوس أو لمس)
+  function deactivate(event) {
+    elements.forEach(function (element) {
+      if (!element.contains(event.target)) {
+        element.classList.remove("active");
+      }
+    });
+  }
+
+  document.addEventListener("mousedown", deactivate);
+  document.addEventListener("touchstart", deactivate);
+});
+
