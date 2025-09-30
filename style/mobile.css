@@ -122,6 +122,9 @@
     border-radius: 10px;
     background-color: #5a63747d;
     }
+    body .links-Translate-div .sssw123 {
+        cursor: context-menu;
+    }
 }
 @media screen and (max-height:400px) {
     .desgg {
