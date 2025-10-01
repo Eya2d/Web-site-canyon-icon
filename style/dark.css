@@ -4,6 +4,9 @@
 .body-dark .header-link .ve {
     outline: solid 1px #dde2e7;
 }
+.body-dark input {
+    color: #ebebeb;
+}
 .body-dark .header-link .ve:hover {
     background: rgb(255 255 255 / 14%);
 }
@@ -14,7 +17,10 @@
 .body-dark .body {
     background: #272727;
 }
-.body-dark .header-link .ve svg, .body-dark .div-video button svg {
+.body-dark .desgg {
+    background: #272727;
+}
+.body-dark .header-link .ve svg, .body-dark .div-video button svg, .body-dark .ddde svg {
     color: #ebebeb;
     fill: #ebebeb;
 }
@@ -29,7 +35,7 @@
     background: #272727;
     border-bottom: solid 1px rgb(255 255 255 / 10%);
 }
-.body-dark #ffffd, .body-dark #videoModal {
+.body-dark #ffffd, .body-dark #videoModal, .body-dark #searchModal {
     background-color: #00000066;
 }
 .body-dark #ffffd:active, .body-dark #videoModal:active  {
