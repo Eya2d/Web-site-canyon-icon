@@ -130,8 +130,7 @@
         cursor: context-menu;
     }
     body .search-video {
-        /* max-height: 700px; */
-        bottom: auto;
+        max-height: 97%;
         border-radius: 0px 0px 25px 25px;
         box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
     }
@@ -141,3 +140,4 @@
         display: flex;
     }
 }
+
