@@ -949,6 +949,9 @@ body .search-video {
     height: 20px;
 }
 .search-result {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0;
     user-select: none;
     display: flex;
     padding: 7px 14px;
@@ -966,3 +969,4 @@ body .search-video {
 #closeSearchBtn svg {
     height: 24px;
 }
+
