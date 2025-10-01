@@ -118,7 +118,7 @@ header {
     margin-right: 7px;
 }
 
-.header-link .ve {
+.ve {
     position: relative;
     display: flex;
     justify-content: center;
@@ -131,10 +131,10 @@ header {
     margin-left: 7px;
     color: rgba(61, 64, 77, 0.849);
 }
-.header-link .ve:hover {
+body .ve:hover {
     background: rgba(61, 64, 77, 0.048);
 }
-.header-link .ve svg {
+.ve svg {
     height: 18px;
 }
 .he-h {
@@ -727,7 +727,7 @@ xx:active img {
 .favorite-item img {
     height: 73px;
 }
-.favorite-title {
+.favorite-title, .search-result span {
     padding-top: 4px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -832,9 +832,11 @@ xx:active img {
     position: relative;
     z-index: 10;
     margin-left: 7px;
+    display: flex;
+    justify-content: center;
 }
 .myElement.active .jon-div {
-    height: 129px;
+    height: 170px;
 }
 .jon .ve {
     margin: 0;
@@ -848,6 +850,7 @@ xx:active img {
     top: 25px;
     height: 0;
     overflow: hidden;
+    border-radius: 25px;
 }
 .jon-div .ve {
     animation: appear linear;
@@ -886,9 +889,80 @@ xx:active img {
     padding: 0;
 }
 .myElement.active .lange-div {
-    height: 342px;
+    height: 272px;
     padding: 7px 5px;
 }
 body #translation_buttons {
     max-height: 226px;
+}
+
+
+/* search-video */
+#searchModal {
+    position: fixed;
+    display: none;
+    z-index: 1100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #c8d1da66; /* خلفية شفافة سوداء */
+}
+body .search-video {
+    scrollbar-color: #888 #f1f1f100;
+    display: block;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    margin-top: 30px;
+    overflow-y: auto;
+    width: 480px;
+    min-height: 460px;
+    max-height: 460px;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
+}
+.search-video .heart-menu {
+    padding: 0;
+    overflow: hidden;
+    padding-right: 10px;
+}
+.search-video .heart-menu::before {
+    display: none;
+}
+.search-input {
+    flex: 1 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 44px;
+    padding-right: 2px;
+    background: #0000;
+}
+.ddde {
+    position: absolute;
+    margin: 0 13px;
+}
+.ddde svg {
+    height: 20px;
+}
+.search-result {
+    user-select: none;
+    display: flex;
+    padding: 7px 14px;
+    cursor: pointer;
+}
+.search-result img {
+    height: 73px;
+}
+.search-result span {
+    flex: 1 1;
+}
+.search-result xx {
+    margin-right: 10px;
+}
+#closeSearchBtn svg {
+    height: 24px;
 }
