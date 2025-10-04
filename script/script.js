@@ -519,7 +519,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 searchResults.innerHTML = results.map(id => {
                     const videoData = window[`videoData_${id}`];
                     return `
-                        <div class="search-result Wave-cloud" data-video-id="${id}">
+                        <div class="search-result" data-video-id="${id}">
+                            <a class="ezyK Wave-cloud"></a>
                             <xx class="flex"><img src="${videoData.thumbnail}" alt="${videoData.title}"></xx>
                             <span>${videoData.title}</span>
                         </div>
