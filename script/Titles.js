@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
         't1': 'Open in new',
         't2': 'Close',
         't3': 'Back',
-        't4': 'Forward'
+        't4': 'Forward',
+        't5': 'Copy translation text',
+        't6': ''
     };
 
     // البحث عن جميع العناصر التي تحتوي على الكلاسات المحددة
