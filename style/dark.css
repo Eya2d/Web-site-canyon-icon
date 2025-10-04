@@ -86,6 +86,9 @@
 .body-dark .header-link .ve:hover {
     background: #414141;
 }
+.body-dark .header-link .ve:focus {
+    background: #414141;
+}
 .body-dark .links-Translate-div {
     background-color: #2c3139;
     fill: white;
