@@ -269,8 +269,19 @@ body .heart-menu .ve {
     background: aliceblue;
     display: flex;
     align-items: center;
+    justify-content: center;
     /* box-shadow: 0px 1px 3px #00000012; */
     box-shadow: 0px 1px 3px #00000026;
+}
+vido {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
+    background: #ffffffe0;
+    z-index: 10;
+    fill: #454f5d;
+    box-shadow: 0px 3px 10px #00000033;
 }
 .mbvideo-im img {
     transition: 0.4s;
@@ -689,6 +700,7 @@ body .mbvideo-heart {
     font-size: 14px;
     margin: 4px 4px;
     border-radius: 10px;
+    width: -webkit-fill-available;
 }
 .fffder {
     display: flex;
