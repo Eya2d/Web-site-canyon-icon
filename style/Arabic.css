@@ -1,0 +1,23 @@
+.translated-rtl .modified {
+    direction: rtl;
+}
+.translated-rtl .mbvideo-d {
+        direction: rtl;
+}
+.translated-rtl  .description txt {
+    margin-left: 5px;
+}
+.translated-rtl .description .eerr444 img {
+    margin-left: 8px;
+}
+
+
+
+@media screen and (max-width: 400px) {
+    .translated-rtl .description txt {
+        margin-right: 0;
+    }
+    .translated-rtl .header-logo {
+        font-size: 20px;
+    }
+}
