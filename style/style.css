@@ -969,6 +969,8 @@ body .search-video {
     display: none;
 }
 .search-input {
+    position: relative;
+    z-index: 10;
     flex: 1 1;
     height: 100%;
     border: none;
@@ -1029,3 +1031,4 @@ ssw {
     width: max-content;
     font-size: 12px;
 }
+
