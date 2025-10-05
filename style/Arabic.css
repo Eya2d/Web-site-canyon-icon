@@ -32,6 +32,9 @@
 .translated-rtl .modified l {
     margin-right: 4px;
 }
+.translated-rtl #favoritesCounter {
+    margin-right: 4px;
+}
     
 
 
@@ -44,6 +47,7 @@
         font-size: 20px;
     }
 }
+
 
 
 
