@@ -21,15 +21,15 @@
 .translated-rtl .mbvideo-d {
     padding-bottom: 22px;
 }
-.translated-rtl .heart-menu {
+.translated-rtl #box234 .heart-menu {
     direction: rtl;
     padding-right: 18px;
     padding-left: 0;
 }
-.translated-rtl .heart-menu .ve {
+.translated-rtl #box234 .heart-menu .ve {
     margin-left: 0;
 }
-.translated-rtl .modified l {
+.translated-rtl #box234 .modified l {
     margin-right: 4px;
 }
     
@@ -44,6 +44,7 @@
         font-size: 20px;
     }
 }
+
 
 
 
