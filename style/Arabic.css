@@ -29,6 +29,9 @@
 .translated-rtl .heart-menu .ve {
     margin-left: 0;
 }
+.translated-rtl .modified l {
+    margin-right: 4px;
+}
     
 
 
@@ -41,5 +44,6 @@
         font-size: 20px;
     }
 }
+
 
 
