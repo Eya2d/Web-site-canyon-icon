@@ -15,7 +15,8 @@
     margin-left: 8px;
 }
 .translated-rtl .box-button {
-    padding: 6px 20px;
+    padding: 0px 20px;
+    height: 29px;
 }
 .translated-rtl .mbvideo-d {
     padding-bottom: 22px;
@@ -31,3 +32,4 @@
         font-size: 20px;
     }
 }
+
