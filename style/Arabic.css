@@ -21,6 +21,15 @@
 .translated-rtl .mbvideo-d {
     padding-bottom: 22px;
 }
+.translated-rtl .heart-menu {
+    direction: rtl;
+    padding-right: 18px;
+    padding-left: 0;
+}
+.translated-rtl .heart-menu .ve {
+    margin-left: 0;
+}
+    
 
 
 
@@ -32,4 +41,5 @@
         font-size: 20px;
     }
 }
+
 
