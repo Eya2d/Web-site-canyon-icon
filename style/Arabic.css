@@ -26,9 +26,9 @@
     padding-right: 18px;
     padding-left: 0;
 }
-/* .translated-rtl #box234 .heart-menu .ve {
-    margin-left: 0;
-} */
+.translated-rtl #box234 .heart-menu .ve {
+    margin-left: 10px;
+}
 .translated-rtl .modified l {
     margin-right: 4px;
 }
@@ -44,6 +44,7 @@
         font-size: 20px;
     }
 }
+
 
 
 
