@@ -280,9 +280,11 @@ vido {
     width: 45px;
     height: 45px;
     border-radius: 25px;
-    background: #ffffffe0;
+    /* background: #ffffffe0; */
     z-index: 10;
-    fill: #454f5d;
+    /* fill: #454f5d; */
+    background: #4c9cffe0;
+    fill: #ffffff;
     box-shadow: 0px 3px 10px #00000033;
 }
 .mbvideo-im img {
@@ -1031,4 +1033,5 @@ ssw {
     width: max-content;
     font-size: 12px;
 }
+
 
