@@ -1,7 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // متغير عالمي لتتبع عدد الفيديوهات الجديدة
+    // متغيرات عالمية
     let newFavoritesCount = 0;
-    
+    let sortOrder = 'newToOld'; // الحالة الافتراضية: من الأحدث إلى الأقدم
+    let currentBatch = 0;
+    const BATCH_SIZE = 10;
+    let allVideoIds = [];
+    let displayedVideoIds = new Set();
+    let latestVideoIdsFixed = []; // متغير لتخزين أحدث 4 فيديوهات
+
     // دالة لتنسيق التاريخ بالصيغة المطلوبة
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -10,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     }
-    
+
     // دالة لحفظ المفضلة في localStorage
     function saveFavorites(favorites) {
         localStorage.setItem('videoFavorites', JSON.stringify(favorites));
@@ -44,9 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function toggleNewFavoritesBadge(show = false) {
         const badge = document.getElementById("newFavoritesBadge");
         const countSpan = document.getElementById("newFavoritesCount");
-        
+
         if (!badge || !countSpan) return;
-        
+
         if (show) {
             badge.classList.remove("hidden");
             countSpan.textContent = newFavoritesCount;
@@ -59,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // دالة لإنشاء مراقب للإشعارات عند ظهور box234
     function setupBox234Observer() {
         const box234 = document.getElementById("box234");
-        
+
         if (!box234) {
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
@@ -91,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function setupNotificationsObserver(box234) {
         const observer = new MutationObserver((mutations, obs) => {
             let hasChanges = false;
-            
+
             mutations.forEach((mutation) => {
                 if (mutation.type === 'childList' || mutation.type === 'attributes') {
                     hasChanges = true;
@@ -108,9 +114,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        observer.observe(box234, { 
-            attributes: true, 
-            childList: true, 
+        observer.observe(box234, {
+            attributes: true,
+            childList: true,
             subtree: true,
             attributeFilter: ['class', 'style', 'display']
         });
@@ -125,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const closeObserver = new MutationObserver((mutations) => {
             let isClosed = false;
             mutations.forEach((mutation) => {
-                if (mutation.type === 'attributes' && 
+                if (mutation.type === 'attributes' &&
                     (mutation.attributeName === 'class' || mutation.attributeName === 'style') &&
                     !isVisible(box234)) {
                     isClosed = true;
@@ -155,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!badge || !countSpan) return;
 
         saveNewFavoritesCount(count);
-        
+
         if (count > 0) {
             toggleNewFavoritesBadge(true);
             setupBox234Observer();
@@ -173,9 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
         const rect = el.getBoundingClientRect();
-        return rect.width > 0 && rect.height > 0 && 
-               rect.top < window.innerHeight && 
-               rect.bottom > 0;
+        return rect.width > 0 && rect.height > 0 &&
+            rect.top < window.innerHeight &&
+            rect.bottom > 0;
     }
 
     // دالة لتحديث عداد المفضلة
@@ -214,17 +220,17 @@ document.addEventListener("DOMContentLoaded", () => {
             saveFavorites(favorites);
             renderFavorites();
             updateFavoritesCounter(favorites.length);
-            
+
             const currentNewCount = loadNewFavoritesCount();
             const newTotalCount = currentNewCount + 1;
             saveNewFavoritesCount(newTotalCount);
-            
+
             const newFavoritesIds = loadNewFavoritesIds();
             newFavoritesIds.push(videoData.id);
             localStorage.setItem('newFavoritesIds', JSON.stringify(newFavoritesIds));
-            
+
             showNewFavoritesNotification(newTotalCount, 'add');
-            
+
             return true;
         }
         return false;
@@ -238,23 +244,23 @@ document.addEventListener("DOMContentLoaded", () => {
         saveFavorites(favorites);
         renderFavorites();
         updateFavoritesCounter(favorites.length);
-        
+
         let newFavoritesIds = loadNewFavoritesIds();
         const isNewFavorite = newFavoritesIds.includes(videoId);
         newFavoritesIds = newFavoritesIds.filter(id => id !== videoId);
         localStorage.setItem('newFavoritesIds', JSON.stringify(newFavoritesIds));
-        
+
         let updatedCount = loadNewFavoritesCount();
         if (isNewFavorite && updatedCount > 0) {
             updatedCount = Math.max(0, updatedCount - 1);
             saveNewFavoritesCount(updatedCount);
             showNewFavoritesNotification(updatedCount, 'remove');
         }
-        
+
         Object.keys(videosData).forEach(id => {
             updateHeartButton(id, isFavorited(id));
         });
-        
+
         return updatedCount;
     }
 
@@ -264,9 +270,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const container = document.getElementById("favoritesContainer");
         const clearAllBtn = document.getElementById("clearAllBtn");
         if (!container) return;
-        
+
         updateFavoritesCounter(favorites.length);
-        
+
         if (favorites.length === 0) {
             container.innerHTML = '<div class="no-favorites">لا توجد فيديوهات في المفضلة</div>';
             if (clearAllBtn) {
@@ -307,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // دالة لإنشاء أيقونة القلب
     function createHeartIcon(filled = false) {
-        return filled ? 
+        return filled ?
             '<svg class="heart-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' :
             '<svg class="heart-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
     }
@@ -379,106 +385,290 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // إنشاء الفيديوهات ديناميكياً بشكل تدريجي مع ترتيب الجديد بالأعلى والقديم بالأسفل
-    const videosContainer = document.getElementById("videosContainer");
-    let videoIds = Object.keys(videosData);
-    videoIds = videoIds.reverse(); // عكس الترتيب لجعل الجديد بالأعلى والقديم بالأسفل
-    let currentIndex = 0;
+    // تعيين أحدث 4 فيديوهات بناءً على الترتيب من الأحدث إلى الأقدم
+    latestVideoIdsFixed = Object.keys(videosData).slice(-4).reverse();
 
-    function addVideoDiv() {
-        if (currentIndex >= videoIds.length) return; // إذا انتهت الفيديوهات، توقف
-
-        const id = videoIds[currentIndex];
-        const videoId = videosData[id].split("/").pop().split("?")[0];
-        const videoDiv = document.createElement("div");
-        videoDiv.className = "mbvideo-d";
-        videoDiv.id = id;
-        videoDiv.innerHTML = `
-            <button class="mbvideo-heart kko Wave-cloud" data-video-id="${id}">
-                <div class="heart-icon-container">
-                    ${createHeartIcon(false)}
-                </div>
-            </button>
-            <div class="mbvideo-im Wave-cloud">
-                <vido class="flex">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="ionicon vi1" style="height: 25px;left: 1px; position: relative;" viewBox="0 0 512 512"><path d="M133 440a35.37 35.37 0 01-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37 7.46-27.53 19.46-34.33a35.13 35.13 0 0135.77.45l247.85 148.36a36 36 0 010 61l-247.89 148.4A35.5 35.5 0 01133 440z"/></svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="ionicon vi2" viewBox="0 0 512 512"><path d="M208 432h-48a16 16 0 01-16-16V96a16 16 0 0116-16h48a16 16 0 0116 16v320a16 16 0 01-16 16zM352 432h-48a16 16 0 01-16-16V96a16 16 0 0116-16h48a16 16 0 0116 16v320a16 16 0 01-16 16z"/></svg>
-                </vido>
-                <img alt="Video Thumbnail" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" loading="lazy">
-            </div>
-            <div class="description">
-                <div class="eerr444">
-                    <img class="channel-img" src="image/مشروع جديد (1).png" alt="Channel Image">
-                    <div class="ffr544">
-                        <txt class="video-description" id="desc-${id}">Loading description...</txt>
-                        <div id="Views-${id}" class="channel-name">Loading channel...</div>
-                    </div>
-                </div>
-                <a>New</a>
-            </div>
-        `;
-        videosContainer.appendChild(videoDiv);
-
-        // إضافة مستمع الحدث للنقر على الفيديو
-        videoDiv.addEventListener("click", (e) => {
-            if (!e.target.closest('.mbvideo-heart')) {
-                playVideo(id);
-            }
-        });
-
-        const imgElement = videoDiv.querySelector(".mbvideo-im img");
-        cropThumbnailImage(imgElement, videoId, videoDiv.querySelector(".mbvideo-im"));
-
-        fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
-            .then(response => response.json())
-            .then(data => {
-                const descElement = document.getElementById(`desc-${id}`);
-                const titleText = data.title || "لا يوجد وصف متاح";
-                descElement.textContent = titleText;
-                descElement.setAttribute("title", titleText);
-                
-                const channelDiv = document.getElementById(`Views-${id}`);
-                channelDiv.textContent = data.author_name || "قناة غير معروفة";
-
-                window[`videoData_${id}`] = {
-                    id: id,
-                    title: titleText,
-                    author: data.author_name || "قناة غير معروفة",
-                    thumbnail: imgElement.src,
-                    videoId: videoId,
-                    url: videosData[id]
-                };
-
-                updateHeartButton(id, isFavorited(id));
-            })
-            .catch(error => {
-                console.error(`Error fetching description for video ${id}:`, error);
-                const descElement = document.getElementById(`desc-${id}`);
-                descElement.textContent = "فشل تحميل الوصف";
-                descElement.setAttribute("title", "فشل تحميل الوصف");
-                document.getElementById(`Views-${id}`).textContent = "فشل تحميل اسم القناة";
-                
-                window[`videoData_${id}`] = {
-                    id: id,
-                    title: "فشل تحميل الوصف",
-                    author: "فشل تحميل اسم القناة",
-                    thumbnail: imgElement.src,
-                    videoId: videoId,
-                    url: videosData[id]
-                };
-                
-                updateHeartButton(id, isFavorited(id));
-            });
-
-        currentIndex++;
-        // إضافة الفيديو التالي بعد تأخير قصير
-        setTimeout(() => {
-            requestAnimationFrame(addVideoDiv);
-        }, 100); // تأخير 100 مللي ثانية بين كل فيديو
+    // دالة للحصول على معرفات الفيديوهات الحالية بناءً على الترتيب
+    function getCurrentVideoIds() {
+        let videoIds = Object.keys(videosData);
+        if (sortOrder === 'newToOld') {
+            videoIds = videoIds.reverse(); // من الأحدث إلى الأقدم
+        }
+        return videoIds;
     }
 
-    // بدء عملية الإضافة التدريجية
-    requestAnimationFrame(addVideoDiv);
+    // دالة للحصول على أحدث 4 فيديوهات
+    function getLatestVideoIds() {
+        return latestVideoIdsFixed;
+    }
+
+    // دالة لإضافة زر تحميل الدفعة التالية داخل div
+    function addLoadMoreButton() {
+        const videosContainer = document.getElementById("videosContainer");
+        
+        // إنشاء div يحتوي على زر تحميل المزيد
+        const loadMoreContainer = document.createElement("div");
+        loadMoreContainer.id = "loadMoreContainer";
+        loadMoreContainer.className = "load-more-container";
+        
+        const loadMoreBtn = document.createElement("button");
+        loadMoreBtn.id = "loadMoreBtn";
+        loadMoreBtn.className = "load-more-btn";
+        loadMoreBtn.innerHTML = `
+            <span>New batch</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14m-7-7h14"/>
+            </svg>
+        `;
+        
+        loadMoreBtn.addEventListener("click", loadNextBatch);
+        loadMoreContainer.appendChild(loadMoreBtn);
+        videosContainer.appendChild(loadMoreContainer);
+    }
+
+    // دالة لإزالة زر تحميل الدفعة التالية
+    function removeLoadMoreButton() {
+        const loadMoreContainer = document.getElementById("loadMoreContainer");
+        if (loadMoreContainer) {
+            loadMoreContainer.remove();
+        }
+    }
+
+    // دالة لتحميل الدفعة التالية من الفيديوهات
+    function loadNextBatch() {
+        const loadMoreBtn = document.getElementById("loadMoreBtn");
+        if (loadMoreBtn) {
+            loadMoreBtn.style.opacity = "0.5";
+            loadMoreBtn.style.pointerEvents = "none";
+        }
+
+        currentBatch++;
+        renderVideosBatch().then(() => {
+            if (loadMoreBtn) {
+                loadMoreBtn.style.opacity = "";
+                loadMoreBtn.style.pointerEvents = "";
+            }
+        });
+    }
+
+    // دالة لعرض دفعة من الفيديوهات
+    function renderVideosBatch() {
+        return new Promise((resolve) => {
+            const videosContainer = document.getElementById("videosContainer");
+            const startIndex = currentBatch * BATCH_SIZE;
+            const endIndex = startIndex + BATCH_SIZE;
+            const batchVideoIds = allVideoIds.slice(startIndex, endIndex);
+            const latestVideoIds = getLatestVideoIds();
+
+            let currentIndex = 0;
+
+            function addVideoDiv() {
+                if (currentIndex >= batchVideoIds.length) {
+                    // التحقق إذا كان هناك المزيد من الفيديوهات لتحميلها
+                    const remainingVideos = allVideoIds.length - ((currentBatch + 1) * BATCH_SIZE);
+                    
+                    if (remainingVideos > 0) {
+                        addLoadMoreButton();
+                    } else {
+                        removeLoadMoreButton();
+                    }
+                    
+                    resolve();
+                    return;
+                }
+
+                const id = batchVideoIds[currentIndex];
+                if (displayedVideoIds.has(id)) {
+                    currentIndex++;
+                    requestAnimationFrame(addVideoDiv);
+                    return;
+                }
+
+                displayedVideoIds.add(id);
+                const videoId = videosData[id].split("/").pop().split("?")[0];
+                const videoDiv = document.createElement("div");
+                videoDiv.className = "mbvideo-d";
+                videoDiv.id = id;
+                
+                // إضافة وسم <a>New</a> فقط إذا كان الفيديو ضمن آخر 4 فيديوهات
+                const isNewVideo = latestVideoIds.includes(id);
+                videoDiv.innerHTML = `
+                    <button class="mbvideo-heart kko Wave-cloud" data-video-id="${id}">
+                        <div class="heart-icon-container">
+                            ${createHeartIcon(false)}
+                        </div>
+                    </button>
+                    <div class="mbvideo-im Wave-cloud">
+                        <vido class="flex">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="ionicon vi1" style="height: 25px;left: 1px; position: relative;" viewBox="0 0 512 512"><path d="M133 440a35.37 35.37 0 01-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37 7.46-27.53 19.46-34.33a35.13 35.13 0 0135.77.45l247.85 148.36a36 36 0 010 61l-247.89 148.4A35.5 35.5 0 01133 440z"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="ionicon vi2" viewBox="0 0 512 512"><path d="M208 432h-48a16 16 0 01-16-16V96a16 16 0 0116-16h48a16 16 0 0116 16v320a16 16 0 01-16 16zM352 432h-48a16 16 0 01-16-16V96a16 16 0 0116-16h48a16 16 0 0116 16v320a16 16 0 01-16 16z"/></svg>
+                        </vido>
+                        <img alt="Video Thumbnail" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" loading="lazy">
+                    </div>
+                    <div class="description">
+                        <div class="eerr444">
+                            <img class="channel-img" src="image/مشروع جديد (1).png" alt="Channel Image">
+                            <div class="ffr544">
+                                <txt class="video-description" id="desc-${id}">Loading description...</txt>
+                                <div id="Views-${id}" class="channel-name">Loading channel...</div>
+                            </div>
+                        </div>
+                        ${isNewVideo ? '<a>New</a>' : ''}
+                    </div>
+                `;
+                videosContainer.appendChild(videoDiv);
+
+                // إضافة مستمع الحدث للنقر على الفيديو
+                videoDiv.addEventListener("click", (e) => {
+                    if (!e.target.closest('.mbvideo-heart')) {
+                        playVideo(id);
+                    }
+                });
+
+                const imgElement = videoDiv.querySelector(".mbvideo-im img");
+                cropThumbnailImage(imgElement, videoId, videoDiv.querySelector(".mbvideo-im"));
+
+                fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const descElement = document.getElementById(`desc-${id}`);
+                        const titleText = data.title || "لا يوجد وصف متاح";
+                        descElement.textContent = titleText;
+                        descElement.setAttribute("title", titleText);
+
+                        const channelDiv = document.getElementById(`Views-${id}`);
+                        channelDiv.textContent = data.author_name || "قناة غير معروفة";
+
+                        window[`videoData_${id}`] = {
+                            id: id,
+                            title: titleText,
+                            author: data.author_name || "قناة غير معروفة",
+                            thumbnail: imgElement.src,
+                            videoId: videoId,
+                            url: videosData[id]
+                        };
+
+                        updateHeartButton(id, isFavorited(id));
+                    })
+                    .catch(error => {
+                        console.error(`Error fetching description for video ${id}:`, error);
+                        const descElement = document.getElementById(`desc-${id}`);
+                        descElement.textContent = "فشل تحميل الوصف";
+                        descElement.setAttribute("title", "فشل تحميل الوصف");
+                        document.getElementById(`Views-${id}`).textContent = "فشل تحميل اسم القناة";
+
+                        window[`videoData_${id}`] = {
+                            id: id,
+                            title: "فشل تحميل الوصف",
+                            author: "فشل تحميل اسم القناة",
+                            thumbnail: imgElement.src,
+                            videoId: videoId,
+                            url: videosData[id]
+                        };
+
+                        updateHeartButton(id, isFavorited(id));
+                    });
+
+                currentIndex++;
+                // إضافة الفيديو التالي بعد تأخير قصير
+                setTimeout(() => {
+                    requestAnimationFrame(addVideoDiv);
+                }, 100);
+            }
+
+            // بدء عملية الإضافة التدريجية
+            requestAnimationFrame(addVideoDiv);
+        });
+    }
+
+    // دالة لعرض الفيديوهات بناءً على الترتيب
+    function renderVideos() {
+        return new Promise((resolve) => {
+            const videosContainer = document.getElementById("videosContainer");
+            videosContainer.innerHTML = ''; // إفراغ المحتوى
+            
+            // إعادة تعيين حالة التحميل
+            currentBatch = 0;
+            displayedVideoIds.clear();
+            allVideoIds = getCurrentVideoIds();
+            
+            // تحميل الدفعة الأولى
+            renderVideosBatch().then(resolve);
+        });
+    }
+
+    // تهيئة عرض الفيديوهات عند تحميل الصفحة
+    renderVideos();
+
+    // دالة لتطبيق opacity على الزر المعاكس
+    function applyOpacityToOppositeButton(clickedButton) {
+        const sortNewToOldBtn = document.getElementById("sortNewToOld");
+        const sortOldToNewBtn = document.getElementById("sortOldToNew");
+        
+        if (clickedButton === sortNewToOldBtn) {
+            sortOldToNewBtn.style.opacity = "0.5";
+            sortOldToNewBtn.style.pointerEvents = "none";
+        } else {
+            sortNewToOldBtn.style.opacity = "0.5";
+            sortNewToOldBtn.style.pointerEvents = "none";
+        }
+    }
+
+    // دالة لإزالة opacity من جميع الأزرار
+    function removeOpacityFromAllButtons() {
+        const sortNewToOldBtn = document.getElementById("sortNewToOld");
+        const sortOldToNewBtn = document.getElementById("sortOldToNew");
+        
+        sortNewToOldBtn.style.opacity = "";
+        sortNewToOldBtn.style.pointerEvents = "";
+        sortOldToNewBtn.style.opacity = "";
+        sortOldToNewBtn.style.pointerEvents = "";
+    }
+
+    // إعداد أزرار الترتيب
+    const sortNewToOldBtn = document.getElementById("sortNewToOld");
+    const sortOldToNewBtn = document.getElementById("sortOldToNew");
+    const sortStatus = document.getElementById("sortStatus");
+
+    sortNewToOldBtn.addEventListener("click", async () => {
+        if (sortOrder !== 'newToOld') {
+            sortOrder = 'newToOld';
+            sortNewToOldBtn.classList.add('ccvvv');
+            sortNewToOldBtn.innerHTML = '<icon>check</icon>New';
+            sortOldToNewBtn.classList.remove("ccvvv");
+            sortOldToNewBtn.innerHTML = "Old";
+            sortStatus.textContent = 'New';
+            
+            // تطبيق opacity على الزر المعاكس
+            applyOpacityToOppositeButton(sortNewToOldBtn);
+            
+            // انتظار انتهاء تحميل الفيديوهات
+            await renderVideos();
+            
+            // إزالة opacity بعد الانتهاء
+            removeOpacityFromAllButtons();
+        }
+    });
+
+    sortOldToNewBtn.addEventListener("click", async () => {
+        if (sortOrder !== 'oldToNew') {
+            sortOrder = 'oldToNew';
+            sortOldToNewBtn.classList.add("ccvvv");
+            sortOldToNewBtn.innerHTML = '<icon>check</icon>Old';
+            sortNewToOldBtn.classList.remove("ccvvv");
+            sortNewToOldBtn.innerHTML = "New";
+            sortStatus.textContent = 'Old';
+            
+            // تطبيق opacity على الزر المعاكس
+            applyOpacityToOppositeButton(sortOldToNewBtn);
+            
+            // انتظار انتهاء تحميل الفيديوهات
+            await renderVideos();
+            
+            // إزالة opacity بعد الانتهاء
+            removeOpacityFromAllButtons();
+        }
+    });
 
     // معالجة النقر على زر البحث
     const searchBtn = document.getElementById("searchBtn");
@@ -489,7 +679,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // دالة لعرض رسالة عدم وجود نتائج
     function showNoResultsMessage() {
-        searchResults.innerHTML = '<ssw>Here the search results will appear.</ssw>';
+        searchResults.innerHTML = '<ssw>ستظهر نتائج البحث هنا.</ssw>';
     }
 
     searchBtn.addEventListener("click", () => {
@@ -572,7 +762,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const button = e.target.closest('.mbvideo-heart');
             const videoId = button.dataset.videoId;
             const videoData = window[`videoData_${videoId}`];
-            
+
             if (!videoData) {
                 alert('بيانات الفيديو غير جاهزة بعد');
                 return;
@@ -607,7 +797,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const button = e.target.closest('.delete-favorite');
             const videoId = button.dataset.videoId;
             removeFromFavorites(videoId);
-            
+
             const heartButton = document.querySelector(`#${videoId} .mbvideo-heart`);
             if (heartButton) {
                 const iconContainer = heartButton.querySelector('.heart-icon-container');
@@ -759,7 +949,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const videoURL = videosData[id] + "?enablejsapi=1";
         videoContainer.innerHTML = `<iframe src="${videoURL}" allowfullscreen></iframe>`;
         modal.style.display = "flex";
-        
+
         removeCocoClass();
         const videoDiv = document.getElementById(id);
         if (videoDiv) {
@@ -768,12 +958,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 mbvideoIm.classList.add("coco");
             }
         }
-        
+
         const favoriteItem = document.querySelector(`[data-video-id="${id}"]`);
         if (favoriteItem) {
             favoriteItem.classList.add("coco");
         }
-        
+
         updateNavigationButtons();
         try {
             await loadYouTubeAPI();
@@ -1662,6 +1852,39 @@ document.addEventListener("DOMContentLoaded", function () {
       // إضافة active للعنصر المضغوط
       element.classList.add("active");
     });
+
+    // إضافة مستمع لحدث عجلة الفأرة مع options
+    element.addEventListener("wheel", function (event) {
+      // إذا كان العنصر نشطاً، لا نزيل active عند تدوير العجلة داخله
+      // نترك السلوك الافتراضي للscroll يعمل
+      if (element.classList.contains("active")) {
+        // نمنع فقط إزالة الـ active ونترك الscroll يعمل بشكل طبيعي
+        event.stopPropagation();
+        return;
+      }
+    }, { passive: true }); // استخدمنا passive: true للسماح بأداء أفضل للscroll
+
+  });
+
+  // إضافة مستمع عام لعجلة الفأرة على المستند (فقط للعناصر غير النشطة)
+  document.addEventListener("wheel", function (event) {
+    const activeElement = document.querySelector(".myElement.active");
+    
+    // إذا كان هناك عنصر نشط وكانت عجلة الفأرة خارج هذا العنصر
+    if (activeElement && !activeElement.contains(event.target)) {
+      activeElement.classList.remove("active");
+    }
+  }, { passive: true });
+
+  // عند الضغط على زر Esc في لوحة المفاتيح
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" || event.key === "Esc" || event.keyCode === 27) {
+      // إزالة active من كل العناصر
+      elements.forEach(function (element) {
+        element.classList.remove("active");
+      });
+      console.log("Active classes removed by Escape key");
+    }
   });
 
   // عند الضغط خارج العناصر (ماوس أو لمس)
