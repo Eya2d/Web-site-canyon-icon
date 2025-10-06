@@ -8,7 +8,7 @@
     .body {
         overflow-y: auto;
     }
-    body a, .favorite-item, #ffffd {
+    body a, .favorite-item, #ffffd, .filter-div label, filter {
         cursor: context-menu;
     }
     .mbvideo-d {
@@ -16,6 +16,9 @@
     }
     body button {
         cursor: context-menu;
+    }
+    body .box h3 {
+        margin-top: 4px;
     }
     body .mbvideo-d, body .description, body .header-logo, body a, .he-h .ve, .search-result  {
         cursor: context-menu;
