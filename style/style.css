@@ -14,6 +14,25 @@ body {
     overflow-y: scroll;
 }
 
+body .ccco {
+    position: relative;
+}
+body .ccco::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: #cccccc80;
+}
+
 background {
     position: absolute;
     top: 0;
@@ -31,7 +50,8 @@ background::before {
     top: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(35px);
+    /* backdrop-filter: blur(14px); */
 }
 body .flex {
     display: flex;
@@ -50,26 +70,28 @@ a {
 x {
     position: relative;
     user-select: none;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 960px;
     max-width: -webkit-fill-available;
     margin: 20px auto;
     margin-bottom: 28px;
-    font-weight: 600;
-    font-size: 18px;
     padding: 0 16px;
-    color: rgb(65, 147, 255);
     text-align: -webkit-center;
 }
-x a {
+x .ddds {
     position: relative;
+    font-weight: 600;
+    font-size: 18px;
+    color: rgb(65, 147, 255);
     cursor: context-menu;
     display: flex;
     justify-content: center;
     width: max-content;
     margin: 0 5px;
 }
-x a::before {
+x .ddds::before {
     position: absolute;
     content: '';
     bottom: -8px;
@@ -226,15 +248,15 @@ body .heart-menu .ve {
     transition: 0.3s;
     width: 20px;
     height: 10px;
-    background: #0000;
-    border: solid 1px #fff;
+    background: #ffffff9c;
+    border: solid 1px #0000;
     border-radius: 25px;
     margin: 0 6px;
     color: white;
     box-shadow: 0px 1px 7px #0000002e;
 }
 .baner-bun button:hover {
-    background-color: rgba(255, 255, 255, 0.158);
+    background-color: rgba(255, 255, 255, 0.349);
 }
 .baner-bun button .ripple, .box-button .ripple {
     background-color: rgba(255, 255, 255, 0.171);
@@ -749,7 +771,7 @@ xx {
     width: 97.33px;
     border-radius: 8px;
     background: #cccccc3d;
-    box-shadow: 0 0 0 1px #cccccc4a inset;
+    box-shadow: 0 0 0 1px #cccccc4a inset, 0 0 0 1px #cccccc4a;
 }
 xx img {
     transition: ease 0.3s;
@@ -1034,4 +1056,124 @@ ssw {
     font-size: 12px;
 }
 
+.filter-vi {
+    position: absolute;
+    right: 16px;
+    z-index: 10;
+    top: 0;
+}
+filter {
+    padding: 6px 10px;
+    border: solid #cccccc78 1px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+filter:hover {
+    background: #cccccc1f;
+}
+body filter svg {
+    height: 17px;
+    margin-right: 8px;
+}
+.filter-div {
+    position: absolute;
+    transform-origin: right top;
+    transition: ease 0.3s;
+    transform: scale(0);
+    opacity: 0;
+    width: 139px;
+    top: 37px;
+    right: -6px;
+    background: white;
+    padding: 4px 0;
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
+}
+.filter-div hr {
+    margin: 4px 0;
+}
+.myElement.active .filter-div {
+    transform: scale(1);
+    opacity: 1;
+}
+.myElement.active filter {
+    background: #cccccc3f;
+    border: solid #cccccc9d 1px;
+}
+.filter-div .ccvvv {
+    opacity: 1;
+    font-weight: 600;
+    /* background: #cccccc3f; */
+    /* background: #5aaaff; */
+    /* color: white; */
+}
+.filter-div .ccvvv:hover {
+    opacity: 1;
+    /* background: #cccccc5e; */
+    /* background: #549eee; */
+}
+.filter-div .ccvvv icon {
+    display: flex;
+}
+.filter-div a {
+    display: flex;
+    align-items: center;
+    height: 35px;
+    padding: 0 16px;
+    padding-left: 30px;
+    margin: 0 4px;
+    border-radius: 10px;
+    opacity: .5;
+}
+.filter-div a:hover {
+    opacity: .8;
+}
+.filter-div a::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+.filter-div a icon {
+    position: absolute;
+    transition: ease 0.3s;
+    left: 4px;
+    display: none;
+}
+.filter-div a svg {
+    height: 20px;
+    color: #0084ff;
+}
 
+#loadMoreContainer {
+    width: 100%;
+    text-align: -webkit-center;
+}
+#loadMoreContainer button {
+    transition: ease 0.3s;
+    padding: 0 20px;
+    height: 35px;
+    border: none;
+    border-radius: 25px;
+    background: #4c9cffe0;
+    color: #ffffff;
+}
+#loadMoreContainer button:active {
+    transition: ease 0.1s;
+    transform: scale(0.97);
+}
+
+.jon-v {
+    position: relative;
+}
+.jon-v::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 8;
+}
