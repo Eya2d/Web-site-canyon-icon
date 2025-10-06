@@ -8,5 +8,5 @@ const videosData = {
     Ey007: "https://www.youtube.com/embed/VAjbRrZm80s",
     Ey008: "https://www.youtube.com/embed/RUG8yFJKVco",
     Ey009: "https://www.youtube.com/embed/37KohMnlP7Q",
-    Ey0010: "https://www.youtube.com/embed/MJUssi2c6Ls"
+    Ey010: "https://www.youtube.com/embed/MJUssi2c6Ls"
 };
