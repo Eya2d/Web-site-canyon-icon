@@ -2,6 +2,9 @@
     font-size: 13px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", "Open Sans", Arial, sans-serif;
 }
+.translated-rtl input {
+    text-align: right;
+}
 .translated-rtl .modified {
     direction: rtl;
 }
@@ -35,7 +38,15 @@
 .translated-rtl #favoritesCounter {
     margin-right: 4px;
 }
-    
+.translated-rtl .filter-div a icon {
+    right: 4px;
+    left: auto;
+}
+.translated-rtl .filter-div a {
+    padding-right: 30px;
+    padding-left: 0;
+    direction: rtl;
+}
 
 
 
@@ -50,12 +61,3 @@
         margin-bottom: 10px;
     }
 }
-
-
-
-
-
-
-
-
-
