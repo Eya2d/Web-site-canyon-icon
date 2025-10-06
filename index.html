@@ -1,1179 +1,222 @@
-body {
-    width: 100%;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-    color: rgba(61, 64, 77, 0.849);
-    font-family: Arial;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canyon icon</title>
+    <link rel="icon" href="image/logo.png">
 
-.body {
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-}
+    <!-- link - css -->
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/icon-style.css">
+    <link rel="stylesheet" href="style/mobile.css">
+    <link rel="stylesheet" href="style/dark.css">
+    <link rel="stylesheet" href="style/Arabic.css">
 
-body .ccco {
-    position: relative;
-}
-body .ccco::before {
-    position: absolute;
-    content: '';
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
-}
+    <!-- link - script -->
+    <script src="https://tybascript1234.github.io/Languag/embed.js"></script>
 
-hr {
-    border: none;
-    height: 1px;
-    background: #cccccc80;
-}
+</head>
+<body>
+    <div class="ccvvfr header-link flex" id="searchModal">
+        <div class="search-video heart" id="searchBox">
+            <div class="heart-menu flex">
+                <icon class="ddde">search</icon>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search video">
+                <button class="Wave-cloud kko t3 ve" id="closeSearchBtn"><icon>arrow2_</icon></button>
+            </div>
+            <div class="heart-div" id="searchResults"><ssw>Here the search results will appear.</ssw></div>
+        </div>
+    </div>
+    <div class="body">
+    <!-- Header -->
 
-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: url(../image/background.webp);
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-}
-background::before {
-    position: absolute;
-    content: '';
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(20px);
-    /* backdrop-filter: blur(14px); */
-}
-body .flex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.xlm {
-    position: relative;
-    width: 984px;
-    max-width: -webkit-fill-available;
-    margin: auto;
-}
-a {
-    cursor: pointer;
-}
-x {
-    position: relative;
-    user-select: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 960px;
-    max-width: -webkit-fill-available;
-    margin: 20px auto;
-    margin-bottom: 28px;
-    padding: 0 16px;
-    text-align: -webkit-center;
-}
-x .ddds {
-    position: relative;
-    font-weight: 600;
-    font-size: 18px;
-    color: rgb(65, 147, 255);
-    cursor: context-menu;
-    display: flex;
-    justify-content: center;
-    width: max-content;
-    margin: 0 5px;
-}
-x .ddds::before {
-    position: absolute;
-    content: '';
-    bottom: -8px;
-    height: 3px;
-    width: 70%;
-    border-radius: 90% 90% 0% 0%;
-    background-color: rgb(65, 147, 255);
-}
-
-body .hidden {
-    display: none;
-}
-
-
-/* -------------- */
-header {
-    position: sticky;
-    top: 0;
-    z-index: 500;
-    height: 65px;
-    max-width: 100%;
-    display: flex;
-    justify-content: center;
-    background: white;
-    box-shadow: 0px 5px 7px #fff
-}
-.header-div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 1000px;
-    max-width: -webkit-fill-available;
-    padding: 0 16px;
-}
-.header-link, .header-logo {
-    display: flex;
-    align-items: center;
-}
-.header-logo {
-    font-size: 23px;
-    font-weight: 600;
-    user-select: none;
-}
-.header-logo img {
-    height: 36px;
-    margin-right: 7px;
-}
-
-.ve {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: anchor-center;
-    border-radius: 25px;
-    text-decoration: none;
-    width: 36px;
-    height: 36px;
-    outline: solid 1px #dde2e7;
-    margin-left: 7px;
-    color: rgba(61, 64, 77, 0.849);
-    border: none;
-    background: #0000
-}
-body .ve:hover {
-    background: rgba(61, 64, 77, 0.048);
-}
-.ve svg {
-    height: 18px;
-}
-.he-h {
-    position: relative;
-}
-zo  {
-    position: absolute;
-    user-select: none;
-    z-index: 5;
-    top: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    border-radius: 20px;
-    background: #ce98f0;
-    color: white;
-    margin: -5px;
-    box-shadow: 0px 1px 3px #3a3e5154;
-}
-.he-h .ve {
-    margin: 0;
-    cursor: pointer;
-}
-
-.heart {
-    position: absolute;
-    scrollbar-color: #888 #f1f1f100;
-    display: none;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    margin-top: 30px;
-    left: 50%;
-    transform: translate(-50%);
-    z-index: 1100;
-    right: 0;
-    overflow-y: auto;
-    width: 480px;
-    min-height: 460px;
-    max-height: 460px;
-    border-radius: 20px;
-    background: white;
-    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
-}
-body .heart-menu {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 10;
-    padding: 0 10px;
-    padding-left: 18px;
-    justify-content: space-between;
-    height: 49px;
-    border-bottom: solid 1px rgb(0 0 0 / 10%);
-}
-body .heart-menu .ve {
-    outline: none;
-}
-.heart-div {
-    /* height: 92.2%; */
-}
-/* .he-y svg {
-    fill: #ff0033;
-}
-.he-c svg  {
-    fill: #0cc143;
-} */
-
-.baner {
-    height: 300px;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-top: 16px;
-    background: white;
-}
-.baner background {
-    opacity: .8;
-    background-image: url(../image/background.webp);
-}
-.baner-bun {
-    position: absolute;
-    z-index: 25;
-    width: 100%;
-    bottom: 25px;
-}
-.baner-bun button {
-    transition: 0.3s;
-    width: 20px;
-    height: 10px;
-    background: #ffffff9c;
-    border: solid 1px #0000;
-    border-radius: 25px;
-    margin: 0 6px;
-    color: white;
-    box-shadow: 0px 1px 7px #0000002e;
-}
-.baner-bun button:hover {
-    background-color: rgba(255, 255, 255, 0.349);
-}
-.baner-bun button .ripple, .box-button .ripple {
-    background-color: rgba(255, 255, 255, 0.171);
-}
-
-.mbvideo {
-    display: flex;
-    flex-wrap: wrap;
-    /* padding-bottom: 50px; */
-    padding: 0 10px;
-}
-.mbvideo-d {
-    animation: appear linear;
-    animation-timeline: view();
-    animation-range: entry 0;
-    width: 48%;
-    max-width: -webkit-fill-available;
-    margin: auto;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-bottom: 25px;
-}
-#content-container2 .mbvideo-d:last-child {
-    margin: 0 10px;
-}
-.mbvideo-d .ripple {
-    background-color: rgba(81, 87, 94, 0.096);
-}
-.mbvideo-im {
-    position: relative;
-    overflow: hidden;
-    max-height: 220px;
-    border-radius: 20px;
-    background: aliceblue;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* box-shadow: 0px 1px 3px #00000012; */
-    box-shadow: 0px 1px 3px #00000026;
-}
-vido {
-    position: absolute;
-    width: 45px;
-    height: 45px;
-    border-radius: 25px;
-    /* background: #ffffffe0; */
-    z-index: 10;
-    /* fill: #454f5d; */
-    background: #4c9cffe0;
-    fill: #ffffff;
-    box-shadow: 0px 3px 10px #00000033;
-}
-.mbvideo-im img {
-    transition: 0.4s;
-    width: 100%;
-}
-.mbvideo-im:hover img {
-    transition: 0.2s;
-    transform: scale(1.1);
-}
-.coco {
-    /* outline: solid 2px #0077ff; */
-    outline-offset: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.coco img {
-    filter: brightness(0.5);
-}
-.vi2 {
-    display: none;
-}
-.coco .vi2 {
-    display: flex;
-    height: 25px;
-}
-.coco .vi1 {
-    display: none;
-}
-.coco::before {
-    position: absolute;
-    z-index: 5;
-    content: '✔';
-    height: 45px;
-    width: 45px;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
-    border-radius: 50px;
-    outline: solid 2px #0077ff;
-    background: #34384394;
-    text-shadow: 0px 1px 3px #00000038;
-    color: white;
-    font-size: 25px;
-}
-@keyframes appear {
-    from {
-        opacity: 0;
-        scale: 0.8;
-    }
-    to {
-        opacity: 1;
-        scale: 1;
-    }
-}
-
-.description {
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 10px;
-    padding-top: 16px;
-    align-items: flex-start;
-}
-.description txt {
-    transition: 0.2s;
-    font-size: 16px;
-    font-weight: 600;
-    width: auto;
-    margin: auto;
-    /* font-weight: 400; */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    max-height: 66px;
-}
-.description .eerr444 {
-    max-width: 385px; /*340px*/
-    display: flex;
-    align-items: flex-start;
-}
-.description .eerr444 img {
-    height: 34px;
-    border-radius: 25px;
-    border: solid 1px #e2e2e2;
-    margin-right: 8px;
-}
-/* .description:hover txt {
-    color: rgb(65, 147, 255);
-} */
-.ffr544 {
-    display: block;
-    margin: auto;
-}
-.ffr544 div {
-    margin-top: 3px;
-    opacity: .6;
-}
-.ffr544 div:hover {
-    opacity: .8;
-}
-.description a {
-    user-select: none;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 17px;
-    font-size: 10px;
-    background-color: #42474fed;
-}
-
-.Statistics {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 50px;
-}
-.ddf {
-    display: block;
-    width: 140px;
-    text-align: -webkit-center;
-    padding-bottom: 20px;
-}
-.ddf a {
-    font-size: 16px;
-    font-weight: 600;
-    opacity: .7;
-}
-.ddf h2 {
-    margin-bottom: 10px;
-}
-
-#videoModal {
-    transition: ease 0.3s;
-    display: none;
-    user-select: none;
-    position: fixed;
-    z-index: 10000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    background: #c8d1da66;
-}
-.modal-content {
-    background: rgb(255 255 255);
-    /* box-shadow: 0px 11px 22px #00000038; */
-    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
-    padding: 4px;
-    border-radius: 0;
-    position: relative;
-    width: 97%;
-    max-width: 800px;
-}
-.div-video {
-    position: absolute;
-    transition: 0.3s;
-    padding: 20px;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%);
-    display: flex;
-    opacity: 0;
-}
-.div-video button {
-    background: #ffffff;
-    box-shadow: 0px 2px 7px #353a415c;
-    font-size: 22px;
-    border: none;
-    width: 34px;
-    height: 34px;
-    margin: 0 5px;
-    border-radius: 25px;
-}
-.div-video button:hover svg {
-    /* color: rgb(65, 147, 255); */
-    color: rgb(25 125 255);
-}
-.div-video button:active {
-    transform: scale(1.2);
-    background-color: white;
-    opacity: 1;
-}
-.div-video button:active svg {
-    color: rgb(25 125 255);
-}
-.modal-content:hover .div-video {
-    opacity: 1;
-}
-iframe {
-    width: 100%;
-    height: 450px;
-    border: none;
-    display: block;
-    border-radius: 0;
-}
-
-.ad-container {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: white;
-    background: rgb(255, 255, 255);
-    justify-content: center;
-    align-items: center;
-    z-index: 1500;
-    backdrop-filter: blur(8px);
-}
-.ad-container background {
-    opacity: .5;
-}
-.ad-content {
-    position: relative;
-    text-shadow: 0px 1px 3px #0000000d;
-    z-index: 50;
-    text-align: center;
-    font-size: 24px;
-}
-.ad-content span {
-    font-weight: bold;
-    color: #3392ff;
-}
-.yellow-dot {
-    position: absolute;
-    /* bottom: 10px; */
-    width: 5px;
-    height: 3px;
-    background: yellow;
-    /* border-radius: 50%; */
-    z-index: 1002;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    overflow: hidden;
-}
-.yellow-dot::before {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-    content: 'إعلان';
-    padding: 5px 10px;
-    border-radius: 5px;
-    bottom: 10px;
-    color: white;
-    background-color: #00000096;
-    box-shadow: 0px 1px 3px #00000070;
-}
-.yellow-dot:hover {
-    overflow: initial;
-}
-.yellow-dot:hover:before {
-    z-index: 10;
-    opacity: 1;
-}
-
-.progress-bar {
-    position: absolute;
-    /* bottom: 47px; */
-    bottom: 45px;
-    width: -webkit-fill-available;
-    height: 0px;
-    margin: 0px 16px;
-    display: flex;
-    align-items: center;
-}
-
-.baner-div {
-    position: relative;
-    z-index: 20;
-    user-select: none;
-    max-width: 100%;
-    margin: auto;
-    padding-top: 21px;
-    height: -webkit-fill-available;
-}
-
-.btn.coc {
-    background: white;
-    color: #4f545b;
-    transform: scale(1.3);
-}
-.btn.coc:hover {
-    background: white;
-}
-.box {
-    opacity: 0;
-    text-shadow: 0px 1px 3px #0000000d;
-    text-align: -webkit-center;
-    color: white;
-    max-height: 0;
-    overflow: hidden;
-    padding: 0 15px;
-    margin: 0;
-    transition: opacity 1s ease, max-height 1s ease, padding 1s ease, margin 1s ease, border 1s ease;
-}
-.box h1 {
-    margin-bottom: 0;
-}
-.box h3 {
-    margin-top: 10px;
-    font-weight: 500;
-}
-.box img {
-    height: 50px;
-    margin-bottom: 0;
-    border-radius: 10px;
-    box-shadow: 0px 1px 3px #0000000d;
-}
-.box .dde {
-    margin-top: 10px;
-}
-
-.vo {
-    margin: 0 5px;
-    margin-top: 30px;
-    max-width: 200.16px;
-}
-.vo h1 {
-    margin-bottom: 14px;
-}
-
-.box.show {
-    opacity: 1;
-    max-height: 200px; /* ارتفاع كافي للمحتوى */
-    padding: 15px;
-}
-.box-button {
-    transition: 0.3s;
-    padding: 8px 20px;
-    border-radius: 25px;
-    background: #0000;
-    border: solid 1px;
-    border-color: white;
-    color: white;
-}
-.box-button:hover {
-    background-color: rgba(255, 255, 255, 0.158);
-}
-
-.modified {
-    padding: 20px 16px;
-    text-align: -webkit-center;
-    background: #e5ebf275;
-}
-.modified l {
-    margin-right: 10px;
-}
-l {
-    font-weight: 600;
-}
-
-.desgg {
-    position: fixed;
-    z-index: 10000;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    left: 0;
-    top: 0;
-    background-color: white;
-    display: none;
-}
-.xdsee {
-    color: rgb(65, 147, 255);
-    fill: rgb(65, 147, 255);
-    text-align: -webkit-center;
-}
-.xdsee svg {
-    color: rgb(65, 147, 255);
-    width: max-content;
-    height: 44px;
-    margin-bottom: 8px;
-}
-.xdsee div {
-    font-weight: 600;
-    font-size: 15px;
-}
-
-.video-nav button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
-body .mbvideo-heart {
-    position: absolute;
-    z-index: 5;
-    right: 0;
-    top: 0;
-    margin: 10px;
-    background: white;
-    width: 38px;
-    height: 38px;
-    border-radius: 25px;
-    border: none;
-    box-shadow: 0px 2px 7px #353a415c;
-}
-.mbvideo-heart svg {
-    height: 22px;
-    top: 1px;
-    position: relative;
-}
-
-.favorite-item {
-    animation: appear linear;
-    animation-timeline: view();
-    animation-range: entry 0;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    display: flex;
-    padding: 0;
-    align-items: flex-start;
-    color: rgba(61, 64, 77, 0.849);
-    border: none;
-    outline: none;
-    background: #0000;
-    text-align: -webkit-left;
-    font-size: 14px;
-    margin: 4px 4px;
-    border-radius: 10px;
-    width: -webkit-fill-available;
-}
-.fffder {
-    display: flex;
-    flex: 1 1;
-    padding: 16px;
-}
-.fffder:hover {
-    background: rgb(0 0 0 / 5%);
-}
-/* .favorite-item:focus {
-    background: #0000;
-    box-shadow: 0 0 0 2px #ccc inset;
-} */
-.favorite-item .ve {
-    outline: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: -7px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: #0000;
-}
-.favorite-item .ve svg {
-    height: 20px;
-    width: 20px;
-}
-xx {
-    overflow: hidden;
-    height: 53px;
-    width: 97.33px;
-    border-radius: 8px;
-    background: #cccccc3d;
-    box-shadow: 0 0 0 1px #cccccc4a inset, 0 0 0 1px #cccccc4a;
-}
-xx img {
-    transition: ease 0.3s;
-}
-xx:active img {
-    transition: ease 0.1s;
-    transform: scale(1.1);
-}
-.favorite-item img {
-    height: 73px;
-}
-.favorite-title, .search-result span {
-    padding-top: 4px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    max-height: 110px;
-}
-.favorite-meta {
-    display: flex;
-    position: absolute;
-    align-items: end;
-    padding-bottom: 5px;
-    width: 40px;
-    top: 0;
-    right: 0;
-    margin: 16px;
-}
-.fffrr {
-    flex: 1 1;
-    margin-left: 8px;
-    margin-right: 34px;
-}
-.favorite-date {
-    opacity: .5;
-    margin-top: 4px;
-    display: block;
-    font-size: 13px;
-}
-
-.heart-check svg {
-    animation: check 0.3s;
-    height: 20px;
-    width: 22px;
-    color: #ca76ff;
-}
-/* @keyframes check {
-    0% {
-        transform: scale(1.0);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1.2);
-    }
-} */
-
-#box234.visible {
-    display: block;        /* نترك display:block لإظهار العنصر */
-    opacity: 1;
-}
-
-
-/* تصميم طبقة الـ overlay */
-#ffffd {
-    transition: ease 0.3s;
-  position: fixed;
-  user-select: none;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #c8d1da66; /* خلفية شفافة سوداء */
-  z-index: 999; /* أقل من z-index للـ box234 */
-  display: none; /* مخفي افتراضياً */
-  cursor: pointer;
-  opacity: 0;
-}
-
-/* حالة الظهور */
-#ffffd.active {
-  opacity: 1;
-}
-
-/* للشاشات المحمولة */
-#ffffd:active{
-  background-color: #c8d1da4d;
-  transition: ease 0.1s;
-}
-
-.no-favorites {
-    width: max-content;
-    margin: auto;
-    padding: 14px 0;
-}
-
-.icon {
-    animation: icone 0.3s;
-}
-@keyframes icone {
-    from {
-        opacity: 0;
-        transform: rotateZ(90deg);
-    }
-    to {
         
-    }
-}
+    
+    <div id="ffffd"></div>
 
-.jon {
-    position: relative;
-    z-index: 10;
-    margin-left: 7px;
-    display: flex;
-    justify-content: center;
-}
-.myElement.active .jon-div {
-    height: 170px;
-}
-.jon .ve {
-    margin: 0;
-}
-.jon-div {
-    transition: ease 0.5s;
-    padding-top: 22px;
-    padding-left: 1px;
-    padding-right: 1px;
-    position: absolute;
-    top: 25px;
-    height: 0;
-    overflow: hidden;
-    border-radius: 25px;
-}
-.jon-div .ve {
-    animation: appear linear;
-    animation-timeline: view();
-    animation-range: entry 0;
-    margin-bottom: 7px;
-}
-.jon-div .ve {
-    background: #ffffffee;
-}
-.jon-div .ve:hover {
-    background: #ffffff;
-}
+    <div class="heart header-link" id="box234" aria-hidden="true">
+        <div class="heart-menu flex">
+            <div>Favorites <c id="favoritesCounter">0</c></div>
+            <a class="Wave-cloud ve" id="clearAllBtn"><icon>delete</icon></a>
+        </div>
+        <div class="heart-div" id="favoritesContainer"></div>
+    </div>
 
+    <header>
+        <div class="header-div">
+            <div class="header-logo" onclick="window.location.href='index.html'"><img src="image/logo.png" alt="">Canyon icon</div>
+            <div class="header-link">
+                <div class="lange myElement">
+                    <a class="Wave-cloud kko ve codes"><icon>lang</icon></a>
+                    <div class="lange-div">
+                        <div id="target-container"></div>
+                    </div>
+                </div>
+                
+                <div class="jon myElement">
+                    <zo class="flex" id="newFavoritesBadge"><span id="newFavoritesCount">0</span></zo>
+                    <a class="Wave-cloud kko ve codes" style="position: relative;z-index: 4;"><icon>menu</icon></a>
+                    <!-- ---- -->
+                    <div class="jon-div">
+                        <a class="Wave-cloud kko he-c ve codes" id="searchBtn"><icon>search</icon></a>
+                        <div class="he-h">
+                            <label for="box234" class="Wave-cloud kko ve codes toggle-btn" id="btn"><icon>heart</icon></label>
+                        </div>
+                        <a class="Wave-cloud kko he-c ve" id="darkModeBtn"><icon>moon</icon></a>
+                        <a class="Wave-cloud kko he-y ve" href="https://www.youtube.com/@Canyonicon"><icon>youtube</icon></a>
+                    </div>
+                </div>
+                
+                <!-- <a class="Wave-cloud he-c ve none" href=""><icon>call</icon></a> -->
+            </div>
+        </div>
+    </header>
 
-/* lange */
-.lange {
-    position: relative;
-    z-index: 10;
-    margin-left: 7px;
-}
-.lange .ve {
-    margin: 0;
-}
-.lange-div {
-    animation: appear linear;
-    animation-timeline: view();
-    animation-range: entry 0;
-    transition: ease 0.3s;
-    position: absolute;
-    top: 30px;
-    right: -10px;
-    margin-top: 10px;
-    overflow: hidden;
-    transform-origin: right top;
-    transform: scale(0);
-    opacity: 0;
-    height: 272px;
-    padding: 0;
-}
-.myElement.active .lange-div {
-    transform: scale(1);
-    padding: 7px 5px;
-    opacity: 1;
-}
-body #translation_buttons {
-    max-height: 226px;
-}
+    <div class="xlm" style="padding: 0px 10px;">
+        <section class="baner xlm">
+            <background></background>
+            <div class="baner-div">
+                <div class="box show" id="box1">
+                    <h1>Canyon icon</h1>
+                    <h3>Welcome to our website.<br>How can I help you today? To contact us, log in.</h3>
+                    <button class="box-button Wave-cloud">log in</button>
+                </div>
+                <div class="box" id="box2">
+                    <h1>Video release date</h1>
+                    <h3>Sunday, Tuesday and Thursday at 8 pm Saudi time</h3>
+                    <button class="box-button Wave-cloud">learn more</button>
+                </div>
+                <div class="box" id="box3">
+                    <h1>Don't forget</h1>
+                    <h3>Share the videos with friends and family so everyone <br> can benefit.</h3>
+                    <button class="box-button Wave-cloud">Participate now</button>
+                </div>
 
+                <div class="box flex" id="box4">
+                    <!-- 1 -->
+                    <div class="vo none">
+                        <img src="image/apple-icon-180.webp" alt="">
+                        <h1 class="dde">Do1ng</h1>
+                        <button class="box-button Wave-cloud" onclick="window.location.href='https://do1ng.com/authors/do1ng'">Visit website</button>
+                    </div>
+                    <!-- 2 -->
+                    <div class="vo">
+                        <img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1099%2F%D9%85%D8%B4%D8%B1%D9%88%D8%B9-%D8%AC%D8%AF%D9%8A%D8%AF-(1).png&w=1920&q=100" alt="">
+                        <h1 class="dde">Code</h1>
+                        <button class="box-button Wave-cloud" onclick="window.location.href='https://do1ng.com/authors/code'">Visit website</button>
+                    </div>
+                    <!-- 3 -->
+                    <div class="vo none">
+                        <img src="https://do1ng.com/_next/image?url=https%3A%2F%2Fapi.do1ng.com%2Fstorage%2F1129%2FChatGPT-Image-Aug-11%2C-2025%2C-04_48_32-PM.png&w=1920&q=100" alt="">
+                        <h1 class="dde">Pakxperts</h1>
+                        <button class="box-button Wave-cloud" onclick="window.location.href='https://do1ng.com/authors/pakxperts'">Visit website</button>
+                    </div>
+                </div>
 
-/* search-video */
-#searchModal {
-    position: fixed;
-    display: none;
-    z-index: 1100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    align-items: flex-start;
-    justify-content: center;
-    background-color: #c8d1da66; /* خلفية شفافة سوداء */
-}
-body .search-video {
-    scrollbar-color: #888 #f1f1f100;
-    display: block;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    margin-top: 30px;
-    overflow-y: auto;
-    width: 480px;
-    min-height: 460px;
-    max-height: 460px;
-    border-radius: 20px;
-    background: white;
-    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
-}
-.search-video .heart-menu {
-    padding: 0;
-    overflow: hidden;
-    padding-right: 10px;
-}
-.search-video .heart-menu::before {
-    display: none;
-}
-.search-input {
-    position: relative;
-    z-index: 10;
-    flex: 1 1;
-    height: 100%;
-    border: none;
-    outline: none;
-    padding: 0 44px;
-    padding-right: 2px;
-    background: #0000;
-}
-.ddde {
-    position: absolute;
-    margin: 0 13px;
-}
-.ddde svg {
-    height: 20px;
-}
-.search-result {
-    position: relative;
-    animation: appear linear;
-    animation-timeline: view();
-    animation-range: entry 0;
-    user-select: none;
-    display: flex;
-    padding: 7px 14px;
-    cursor: pointer;
-}
-.search-result:hover {
-    background: #cccccc3d;
-}
-.search-result:active {
-    background: #cccccc5e;
-}
-.search-result .ezyK {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 5;
-    width: 100%;
-    height: 100%;
-}
-.search-result img {
-    height: 73px;
-}
-.search-result span {
-    flex: 1 1;
-}
-.search-result xx {
-    margin-right: 10px;
-}
-#closeSearchBtn svg {
-    height: 22px;
-}
+            </div>
+            <!-- buttons -->
+            <div class="baner-bun flex">
+                <button class="Wave-cloud btn coc" id="btn1"></button>
+                <button class="Wave-cloud btn" id="btn2"></button>
+                <button class="Wave-cloud btn" id="btn3"></button>
+                <button class="Wave-cloud btn" id="btn4"></button>
+            </div>
+        </section>
+    </div>
+    
 
-ssw {
-    display: block;
-    margin: 10px auto;
-    font-weight: 500;
-    opacity: .5;
-    width: max-content;
-    font-size: 12px;
-}
+    <!-- 1 -->
+        <x>
+            <a class="ddds">New Videos</a>
 
-.filter-vi {
-    position: absolute;
-    right: 16px;
-    z-index: 10;
-    top: 0;
-}
-filter {
-    padding: 6px 10px;
-    border: solid #cccccc78 1px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-filter:hover {
-    background: #cccccc1f;
-}
-body filter svg {
-    height: 17px;
-    margin-right: 8px;
-}
-.filter-div {
-    position: absolute;
-    transform-origin: right top;
-    transition: ease 0.3s;
-    transform: scale(0);
-    opacity: 0;
-    width: 139px;
-    top: 37px;
-    right: -6px;
-    background: white;
-    padding: 4px 0;
-    border-radius: 8px;
-    box-shadow: 0px 0px 0px 1px #d1d9e0, 0px 8px 16px -4px #25292e14, 0px 4px 32px -4px #25292e14, 0px 24px 48px -12px #25292e14, 0px 48px 96px -24px #25292e14;
-}
-.filter-div hr {
-    margin: 4px 0;
-}
-.myElement.active .filter-div {
-    transform: scale(1);
-    opacity: 1;
-}
-.myElement.active filter {
-    background: #cccccc3f;
-    border: solid #cccccc9d 1px;
-}
-.filter-div .ccvvv {
-    opacity: 1;
-    font-weight: 600;
-    /* background: #cccccc3f; */
-    /* background: #5aaaff; */
-    /* color: white; */
-}
-.filter-div .ccvvv:hover {
-    opacity: 1;
-    /* background: #cccccc5e; */
-    /* background: #549eee; */
-}
-.filter-div .ccvvv icon {
-    display: flex;
-}
-.filter-div a {
-    display: flex;
-    align-items: center;
-    height: 35px;
-    padding: 0 16px;
-    padding-left: 30px;
-    margin: 0 4px;
-    border-radius: 10px;
-    opacity: .5;
-}
-.filter-div a:hover {
-    opacity: .8;
-}
-.filter-div a::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
-}
-.filter-div a icon {
-    position: absolute;
-    transition: ease 0.3s;
-    left: 4px;
-    display: none;
-}
-.filter-div a svg {
-    height: 20px;
-    color: #0084ff;
-}
+            <div class="filter-vi myElement">
+                <filter class="flex codes"><icon>filter</icon><span id="sortStatus">New</span></filter>
+                <div class="filter-div">
+                    <a class="Wave-cloud ccco ccvvv" id="sortNewToOld"><icon>check</icon>New</a>
+                    <a class="Wave-cloud ccco" id="sortOldToNew">Old</a>
+                    <div class="jon-v" style="display: none;">
+                        <hr>
+                        <a class="Wave-cloud ccco" id="filterAll">All</a>
+                        <a class="Wave-cloud ccco" id="filterFavorites">Favorites</a>
+                        <a class="Wave-cloud ccco" id="filterChannel">Channel</a>
+                        <a class="Wave-cloud ccco" id="filterNewVideos">New video</a>
+                    </div>
+                </div>
+            </div>
 
-#loadMoreContainer {
-    width: 100%;
-    text-align: -webkit-center;
-}
-#loadMoreContainer button {
-    transition: ease 0.3s;
-    padding: 0 20px;
-    height: 35px;
-    border: none;
-    border-radius: 25px;
-    background: #4c9cffe0;
-    color: #ffffff;
-}
-#loadMoreContainer button:active {
-    transition: ease 0.1s;
-    transform: scale(0.97);
-}
+        </x>
+    <div class="mbvideo xlm" id="videosContainer">
+        
+    </div>
 
-.jon-v {
-    position: relative;
-}
-.jon-v::before {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 8;
-}
+    <!-- 2 -->
+        <x><a class="ddds">Our products</a></x>
+    
+    <div class="mbvideo xlm" id="content-container2"></div>
+
+    <!-- 3 -->
+        <x style="margin-top: 50px;"><a class="ddds">Statistics</a></x>
+    <div class="Statistics xlm">
+        <div class="ddf">
+            <h2>Views</h2>
+            <a class="counter" data-target="12,000,000">0</a>
+        </div>
+        <div class="ddf">
+            <h2>Videos</h2>
+            <a class="counter" data-target="245">0</a>
+        </div>
+        <div class="ddf">
+            <h2>Subscriptions</h2>
+            <a class="counter" data-target="120,000">0</a>
+        </div>
+    </div>
+    <!-- <div class="xlm flex">
+        <div class="flex" style="margin-bottom: 40px;"><img style="height: 80px;position: absolute;filter: sepia(1);" src="image/logo.png" alt=""><svg viewBox="0 0 200 200" width="250" height="250" style="transform: rotate(-12deg);"><defs><path id="circlePath"d="M 100, 100m -75, 0a 75,75 0 1,1 150,0a 75,75 0 1,1 -150,0"/></defs><text font-size="16" font-family="Arial"><textPath href="#circlePath" startOffset="0%">Canyon icon number one in the world ⭐⭐⭐⭐⭐⭐⭐⭐⭐</textPath></text></svg></div>
+    </div> -->
+
+    <div class="modified">All rights reserved to Canyon icon | Last modified <l id="currentYear">0000</l></div>
+
+    <div id="videoModal">
+        <!-- <div class="videoModal-div"></div> -->
+    <div class="modal-content">
+        <div class="div-video" id="ff00123">
+            <div class="video-nav flex">
+                <button class="Wave-cloud kko t3" id="prevVideo"><icon>_play</icon></button>
+                <button class="Wave-cloud kko t4" id="nextVideo"><icon>play_</icon></button>
+            </div>
+            <!-- <button class="Wave-cloud kko t5" id=""><icon>code</icon></button> -->
+            <button class="Wave-cloud kko open-youtube t1"><icon>open</icon></button>
+            <button class="close Wave-cloud kko t2"><icon>close</icon></button>
+        </div>
+        <div id="videoContainer"></div>
+        <div id="adModal" class="ad-container">
+            <background></background>
+            <div class="ad-content">
+                <p>إعلان: منتج رائع!</p>
+                <p>سيتم استئناف الفيديو بعد <span id="countdown">5</span> ثوانٍ</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+<div class="desgg">
+    <div class="xdsee">
+        <icon>recycling</icon>
+        <div>Rotate the screen</div>
+    </div>
+</div>
+
+    <!-- link - script -->
+    <!-- <svg viewBox="0 0 200 200" width="300" height="300"><defs><path id="circlePath"d="M 100, 100m -75, 0a 75,75 0 1,1 150,0a 75,75 0 1,1 -150,0"/></defs><text font-size="16" font-family="Arial" fill="black"><textPath href="#circlePath" startOffset="0%">CIRCULAR TEXT GENERATED IN FIGMA •</textPath></text></svg> -->
+    <script src="script/Titles.js"></script>
+    <script src="script/script.js"></script>
+    <script src="script/icons-svg.js"></script>
+    <script src="script/Wave-cloud.js"></script>
+    <!-- JsData -->
+    <script src="script/videosData.js"></script>
+    <script src="script/Do1ngData.js"></script>
+</body>
+</html>
