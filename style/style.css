@@ -1099,6 +1099,7 @@ body filter svg {
     opacity: 1;
 }
 .myElement.active filter {
+    box-shadow: 0px 1px 1px #cccccc40 inset;
     background: #cccccc3f;
     border: solid #cccccc9d 1px;
 }
@@ -1179,4 +1180,3 @@ body filter svg {
     top: 0;
     z-index: 8;
 }
-
