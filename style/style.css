@@ -145,7 +145,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: anchor-center;
-    border-radius: 25px;
+    border-radius: 12px;
     text-decoration: none;
     width: 36px;
     height: 36px;
@@ -1180,3 +1180,4 @@ body filter svg {
     top: 0;
     z-index: 8;
 }
+
