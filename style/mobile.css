@@ -148,6 +148,12 @@
     body .search-video ssw {
         /* display: none; */
     }
+    body .mbvideo-im:hover svg {
+        transform: none;
+    }
+    body .mbvideo-im:active svg {
+        transform: rotateZ(-8deg) scale(1.2);
+    }
 }
 @media screen and (max-height:400px) {
     .desgg {
