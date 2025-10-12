@@ -1,11 +1,15 @@
 .body-dark {
     color: rgb(255 255 255 / 85%);
+    fill: rgb(255 255 255 / 85%);
 }
 .body-dark .header-link .ve {
     outline: solid 1px #dde2e7;
 }
 .body-dark input {
     color: #ebebeb;
+}
+.body-dark hr {
+    background: #cccccc47;
 }
 .body-dark .header-link .ve:hover {
     background: rgb(255 255 255 / 14%);
