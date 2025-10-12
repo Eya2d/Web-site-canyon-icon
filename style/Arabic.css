@@ -48,6 +48,9 @@
     padding-left: 0;
     direction: rtl;
 }
+.translated-rtl #loadMoreContainer button {
+    direction: rtl;
+}
 
 
 
