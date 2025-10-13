@@ -1861,50 +1861,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-      const darkBtn = document.getElementById("darkModeBtn");
-      const body = document.body;
+  const darkBtn = document.getElementById("darkModeBtn");
+  const body = document.body;
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-      // دالة لتحديث شكل الزر
-      function updateButton() {
-        if (body.classList.contains("body-dark")) {
-          darkBtn.innerHTML = '<icon class="icon">sun</icon>'; // نهاري
-        } else {
-          darkBtn.innerHTML = '<icon class="icon">moon</icon>'; // ليلي
-        }
-      }
+  // دالة لتحديث شكل الزر
+  function updateButton() {
+    if (body.classList.contains("body-dark")) {
+      darkBtn.innerHTML = '<icon class="icon">sun</icon>'; // نهاري
+    } else {
+      darkBtn.innerHTML = '<icon class="icon">moon</icon>'; // ليلي
+    }
+  }
 
-      // تحقق من LocalStorage
-      const savedTheme = localStorage.getItem("theme");
+  // دالة لتحديث الثيم
+  function applyTheme(theme) {
+    if (theme === "dark") {
+      body.classList.add("body-dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      body.classList.remove("body-dark");
+      localStorage.setItem("theme", "light");
+    }
+    updateButton();
+  }
 
-      if (savedTheme) {
-        if (savedTheme === "dark") {
-          body.classList.add("body-dark");
-        }
-      } else {
-        // إذا لم يوجد حفظ، نتبع تفضيل النظام
-        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          body.classList.add("body-dark");
-        }
-      }
+  // تحقق من LocalStorage
+  const savedTheme = localStorage.getItem("theme");
 
-      // تحديث الزر عند تحميل الصفحة
-      updateButton();
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else {
+    // اتبع تفضيل النظام عند أول تحميل
+    applyTheme(prefersDark.matches ? "dark" : "light");
+  }
 
-      // عند الضغط على الزر
-      darkBtn.addEventListener("click", () => {
-        body.classList.toggle("body-dark");
+  // عند الضغط على الزر
+  darkBtn.addEventListener("click", () => {
+    const newTheme = body.classList.contains("body-dark") ? "light" : "dark";
+    applyTheme(newTheme);
+  });
 
-        // حفظ الحالة
-        if (body.classList.contains("body-dark")) {
-          localStorage.setItem("theme", "dark");
-        } else {
-          localStorage.setItem("theme", "light");
-        }
-
-        // تحديث الزر
-        updateButton();
-      });
-    });
+  // استمع لتغيير وضع النظام (ليلي ↔ نهاري)
+  prefersDark.addEventListener("change", (event) => {
+    const newTheme = event.matches ? "dark" : "light";
+    applyTheme(newTheme);
+  });
+});
     
 
     
@@ -2031,4 +2034,94 @@ document.addEventListener("DOMContentLoaded", () => {
     applyArabicFont();
   });
   observer.observe(html, { attributes: true, attributeFilter: ["lang"] });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const viewer = document.getElementById("linkViewer");
+  const linkText = document.getElementById("linkText");
+  const iframe = document.getElementById("linkFrame");
+  const closeBtn = document.getElementById("closeBtn");
+  const progressBar = document.getElementById("progressBar");
+
+  function showInViewer(url) {
+    let finalUrl = url;
+    try {
+      finalUrl = new URL(url, window.location.origin).href;
+    } catch (e) {
+      console.warn("Invalid URL:", url);
+    }
+    linkText.textContent = finalUrl;
+    viewer.style.display = "flex";
+
+    // بدء شريط التحميل
+    progressBar.style.width = "0%";
+    let progress = 0;
+    const interval = setInterval(() => {
+      if (progress < 95) progress += Math.random() * 5; // زيادة عشوائية حتى 95%
+      progressBar.style.width = progress + "%";
+    }, 100);
+
+    iframe.src = finalUrl;
+    
+    iframe.onload = () => {
+      clearInterval(interval);
+      progressBar.style.width = "100%";
+      setTimeout(() => {
+        progressBar.style.width = "0%"; // إخفاء الشريط بعد التحميل
+      }, 300);
+    };
+  }
+
+  // التعامل مع النقر على الروابط
+  document.body.addEventListener("click", (e) => {
+    const target = e.target;
+    const link = target.closest("a");
+    if (link && link.href) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      showInViewer(link.href);
+      return;
+    }
+    const onclickAttr = target.getAttribute("onclick");
+    if (onclickAttr && /window\.location(\.href|\.assign|\.replace|\s*=\s*['"])/.test(onclickAttr)) {
+      const match = onclickAttr.match(/['"]([^'"]+)['"]/);
+      if (match && match[1]) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        showInViewer(match[1]);
+        return;
+      }
+    }
+  }, true);
+
+  // اعتراض window.open
+  const originalWindowOpen = window.open;
+  window.open = function (url, target, features) {
+    if (url && typeof url === "string") {
+      showInViewer(url);
+      return null;
+    }
+    return originalWindowOpen.apply(window, arguments);
+  };
+
+  // اعتراض window.location.assign و replace
+  ['assign','replace'].forEach(method => {
+    const originalMethod = window.location[method];
+    window.location[method] = function(url) {
+      if (url && typeof url === "string") {
+        showInViewer(url);
+        return;
+      }
+      if (originalMethod) originalMethod.apply(window.location, arguments);
+    };
+  });
+
+  // زر الإغلاق
+  closeBtn.addEventListener("click", () => {
+    viewer.style.display = "none";
+    iframe.src = "";
+    progressBar.style.width = "0%";
+  });
 });
