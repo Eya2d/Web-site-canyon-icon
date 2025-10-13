@@ -207,6 +207,7 @@ zo  {
 body .heart-menu {
     position: sticky;
     top: 0;
+    width: -webkit-fill-available;
     background: white;
     z-index: 10;
     padding: 0 10px;
@@ -219,7 +220,9 @@ body .heart-menu .ve {
     outline: none;
 }
 .heart-div {
-    /* height: 92.2%; */
+    flex-grow: 1;
+    overflow: auto;
+    scrollbar-width: thin;
 }
 /* .he-y svg {
     fill: #ff0033;
@@ -1201,3 +1204,79 @@ body filter svg {
     z-index: 8;
 }
 
+
+.div-open-link {
+    flex-direction: column;
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    overflow: auto;
+}
+.div-open-link::before {
+    position: absolute;
+    content: 'Website loading...';
+    font-size: 16px;
+    opacity: .7;
+}
+.open-div {
+    position: relative;
+    z-index: 15;
+    width: 100%;
+    height: 44px;
+    justify-content: center;
+    background-color: rgba(61, 64, 77, 0.048);
+    box-shadow: 0px 1px 3px #cccccc9e;
+}
+.div-open-link iframe {
+    position: relative;
+    z-index: 5;
+    flex-grow: 1;
+}
+.open-menu {
+    width: 1000px;
+    padding: 2px 4px;
+    margin: 0 5px;
+    border: solid 1px #ccc;
+    border-radius: 25px;
+    max-width: -webkit-fill-available;
+}
+.open-menu xxx {
+    flex: 1 1;
+    height: 100%;
+    border: none;
+    margin: 0 5px;
+    background: #0000;
+    outline: none;
+    /* user-select: all; */
+    white-space: nowrap;
+    overflow: auto;
+    scrollbar-width: none;
+}
+.open-menu button {
+    width: 30px;
+    height: 30px;
+    border-radius: 25px;
+    border: none;
+    background: #0000;
+}
+.open-menu button:hover {
+    background: #cccccc2f;
+}
+.open-menu button img {
+    height: 18px;
+}
+.lodeng {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    background-color: #3392ff;
+    width: 0%;
+}
