@@ -24,7 +24,7 @@
 .body-dark .desgg {
     background: #272727;
 }
-.body-dark .header-link .ve svg, .body-dark .div-video button svg, .body-dark .ddde svg, .body-dark filter svg {
+.body-dark .header-link .ve svg, .body-dark .div-video button svg, .body-dark .ddde svg, .body-dark filter svg, .body-dark .open-menu button svg {
     color: #ebebeb;
     fill: #ebebeb;
 }
@@ -121,4 +121,20 @@
 }
 .body-dark .selected-lang-button {
     background-color: rgb(139 214 255) !important;
+}
+.body-dark .open-menu {
+    border-color: #cccccc8c;
+}
+.body-dark .open-div {
+    background-color: #272727;
+    box-shadow: 0px 1px 3px #272727;
+}
+.body-dark .div-open-link {
+    background-color: #1b1b1b;
+}
+.body-dark  {
+
+}
+.body-dark  {
+
 }
