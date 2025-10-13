@@ -1248,7 +1248,7 @@ body filter svg {
     max-width: -webkit-fill-available;
 }
 .open-menu xxx {
-    user-select: all;
+    user-select: none;
     flex: 1 1;
     height: 100%;
     border: none;
