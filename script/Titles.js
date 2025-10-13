@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         't3': 'Back',
         't4': 'Forward',
         't5': 'Copy translation text',
-        't6': ''
+        'logo': 'Canyon icon'
     };
 
     // البحث عن جميع العناصر التي تحتوي على الكلاسات المحددة
