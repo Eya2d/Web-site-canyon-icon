@@ -42,7 +42,7 @@
 .body-dark #ffffd, .body-dark #videoModal, .body-dark #searchModal {
     background-color: #00000066;
 }
-.body-dark #ffffd:active, .body-dark #videoModal:active  {
+.body-dark #ffffd:active  {
     background-color: #00000048;
 }
 .body-dark .favorite-item {
@@ -132,8 +132,8 @@
 .body-dark .div-open-link {
     background-color: #1b1b1b;
 }
-.body-dark  {
-
+.body-dark .ad-content .codw {
+    background: #00000042;
 }
 .body-dark  {
 
