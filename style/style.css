@@ -262,7 +262,7 @@ body .heart-menu .ve {
 .baner-bun button:hover {
     background-color: rgba(255, 255, 255, 0.349);
 }
-.baner-bun button .ripple, .box-button .ripple {
+.baner-bun button .ripple, .box-button .ripple, #skipAdBtn .ripple {
     background-color: rgba(255, 255, 255, 0.171);
 }
 
@@ -315,9 +315,10 @@ vido {
     box-shadow: 0px 3px 10px #00000033;
 }
 vido svg {
-    transition: 0.2s;
+    transition: 0.4s;
 }
 .mbvideo-im:hover svg {
+    transition: 0.2s;
     transform: rotateZ(-8deg) scale(1.2);
 }
 .mbvideo-im img {
@@ -485,7 +486,7 @@ vido svg {
     left: 50%;
     transform: translate(-50%);
     display: flex;
-    opacity: 0;
+    opacity: .5;
 }
 .div-video button {
     background: #ffffff;
@@ -537,16 +538,40 @@ iframe {
 .ad-container background {
     opacity: .5;
 }
-.ad-content {
-    position: relative;
+body .ad-content {
+    position: absolute;
     text-shadow: 0px 1px 3px #0000000d;
     z-index: 50;
     text-align: center;
-    font-size: 24px;
+    font-size: 19px;
+    bottom: 20px;
+    justify-content: space-between;
+    padding: 0 20px;
+    width: -webkit-fill-available;
 }
-.ad-content span {
-    font-weight: bold;
-    color: #3392ff;
+.ad-content .codw {
+    color: white;
+    text-shadow: 0px 1px 3px #0000002e;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    background: #e7e7e780;
+    font-weight: 100;
+}
+#skipAdBtn {
+    border: none;
+    display: none;
+    width: max-content;
+    padding: 0 15px;
+}
+#skipAdBtn svg {
+    height: 18px;
+    fill: white;
+    filter: drop-shadow(0px 1px 1px #0000002e);
+    margin-left: 5px;
 }
 .yellow-dot {
     position: absolute;
@@ -1276,9 +1301,32 @@ body filter svg {
 }
 .lodeng {
     position: absolute;
+    overflow: hidden;
+    transition: ease 0.2s;
     bottom: -2px;
     left: 0;
     height: 2px;
     background-color: #3392ff;
     width: 0%;
+}
+.lodeng::before {
+    position: absolute;
+    top: 0;
+    content: '';
+    height: 100%;
+    width: 100%;
+    /* background: #ffffffa3; */
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: loading 2s infinite ease-in-out;
+}
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+    50% {
+        left: 100%;
+    }
+    100% {
+        left: 100%;
+    }
 }
