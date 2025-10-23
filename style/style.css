@@ -273,6 +273,7 @@ body .heart-menu .ve {
     padding: 0 10px;
 }
 .mbvideo-d {
+    position: relative;
     animation: appear linear;
     animation-timeline: view();
     animation-range: entry 0;
