@@ -609,10 +609,10 @@ body .ad-content {
 .progress-bar {
     position: absolute;
     /* bottom: 47px; */
-    bottom: 45px;
+    bottom: 77px;
     width: -webkit-fill-available;
     height: 0px;
-    margin: 0px 16px;
+    margin: 0px 35px;
     display: flex;
     align-items: center;
 }
